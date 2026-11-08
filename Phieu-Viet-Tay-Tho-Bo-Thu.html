@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Phiếu viết tay — Thơ 214 bộ thủ theo khổ (đan xen đọc–viết)</title>
+<title>PHIẾU VIẾT TAY BỘ THỦ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <style>
@@ -16,7 +16,8 @@ h1{font-size:24px;margin:8px 0}
 .btn-print{background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:16px;cursor:pointer}
 .stanza{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin:14px 0}
 .stanza h2{margin:4px 0 10px;font-size:19px;color:#0f766e}
-.pline{font-size:calc(var(--rad)*0.40);line-height:2.15;margin:2px 0 10px}
+.pline{font-size:calc(var(--rad)*0.40);line-height:2.15;margin:2px 0 10px;text-align:left}
+body.align-center .pline{text-align:center}
 .unit{display:inline-block;vertical-align:middle;margin:0 2px;white-space:nowrap}
 .urad{display:inline-block;vertical-align:middle;margin-right:5px;font-family:'KaiTi','STKaiti','Kaiti SC','Ma Shan Zheng',serif;font-size:var(--rad);line-height:1;color:#111827}
 .wboxes{display:inline-block;vertical-align:middle}
@@ -38,14 +39,15 @@ body.no-label .wlabel{display:none}
 }
 </style><style id="pageStyle">@page{ size: A4 portrait; margin: 12mm; }</style></head>
 <body><div class="sheet-wrap">
-<h1>✍️ Phiếu Viết Tay — Đọc Thơ Tới Đâu, Viết Bộ Thủ Tới Đó</h1>
-<div class="sub">Mỗi câu thơ giữ nguyên văn; ngay sau mỗi bộ thủ trong câu là ô viền chấm mờ để viết tay — vừa đọc thơ vừa viết luôn. Bộ thủ dùng font thư pháp <b>KaiTi</b> (máy không có KaiTi sẽ tự dùng font thư pháp Ma Shan Zheng). Ô đầu sau mỗi bộ có chữ mờ để tô theo, các ô sau để trống. 188 bộ nằm trong 7 khổ thơ + 26 bộ bổ sung ở cuối = đủ 214 bộ.</div>
+<h1>PHIẾU VIẾT TAY BỘ THỦ</h1>
 <div class="panel noprint">
   <label>📄 Khổ giấy <select id="paperSize" onchange="applySettings()">
     <option value="A4" selected>A4</option><option value="A5">A5</option>
     <option value="Letter">Letter</option><option value="Legal">Legal</option></select></label>
   <label>↔️ Chiều giấy <select id="orient" onchange="applySettings()">
     <option value="portrait" selected>Dọc</option><option value="landscape">Ngang</option></select></label>
+  <label>↔️ Căn câu thơ <select id="alignSel" onchange="applySettings()">
+    <option value="left" selected>Trái</option><option value="center">Giữa</option></select></label>
   <label>🔠 Cỡ chữ bộ thủ <input type="range" id="radSize" min="30" max="80" value="48" oninput="applySettings()"> <b id="radSizeVal">48px</b></label>
   <label>🔢 Ô viết / bộ <select id="boxCount" onchange="applySettings()">
     <option value="1">1 ô</option><option value="2" selected>2 ô</option><option value="3">3 ô</option><option value="4">4 ô</option></select></label>
@@ -71,16 +73,17 @@ function applySettings(){
   document.querySelectorAll('.wboxes').forEach(function(w){
     [...w.children].forEach(function(b, i){ b.style.display = i < n ? 'inline-flex' : 'none'; });
   });
+  document.body.classList.toggle('align-center', document.getElementById('alignSel').value === 'center');
   document.body.classList.toggle('no-trace', !document.getElementById('trace').checked);
   document.body.classList.toggle('guides', document.getElementById('guides').checked);
   document.body.classList.toggle('no-label', !document.getElementById('labels').checked);
   const sup = document.getElementById('supplement');
   if(sup) sup.style.display = document.getElementById('supShow').checked ? '' : 'none';
-  try{ localStorage.setItem('bothu-print-settings', JSON.stringify({size: size, orient: orient, rad: rad, n: n})); }catch(e){}
+  try{ localStorage.setItem('bothu-print-settings', JSON.stringify({size: size, orient: orient, rad: rad, n: n, align: document.getElementById('alignSel').value})); }catch(e){}
 }
 window.addEventListener('DOMContentLoaded', function(){
   try{ const s = JSON.parse(localStorage.getItem('bothu-print-settings') || 'null');
-    if(s){ document.getElementById('paperSize').value = s.size; document.getElementById('orient').value = s.orient; document.getElementById('radSize').value = s.rad; document.getElementById('boxCount').value = s.n; } }catch(e){}
+    if(s){ document.getElementById('paperSize').value = s.size; document.getElementById('orient').value = s.orient; document.getElementById('radSize').value = s.rad; document.getElementById('boxCount').value = s.n; if(s.align) document.getElementById('alignSel').value = s.align; } }catch(e){}
   applySettings();
 });
 </script></body></html>
