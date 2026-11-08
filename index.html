@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>214 Bộ Thủ — Mục lục</title><style>
+* { box-sizing: border-box; }
+body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; margin: 0; background: #f4f1ea; color: #22252b; line-height: 1.55; }
+.wrap { max-width: 740px; margin: 0 auto; padding: 12px 14px 50px; }
+h1 { font-size: 22px; margin: 10px 0 4px; }
+.sub { color: #6b7280; font-size: 14px; margin-bottom: 14px; }
+.progress-bar { position: sticky; top: 0; z-index: 30; background: rgba(244,241,234,0.96); backdrop-filter: blur(4px); padding: 8px 0; border-bottom: 1px solid #e2ddd2; display: flex; justify-content: space-between; align-items: center; font-size: 13px; gap: 6px; flex-wrap: wrap; }
+.progress-track { flex: 1; min-width: 80px; height: 8px; background: #e2ddd2; border-radius: 4px; margin: 0 6px; overflow: hidden; }
+.progress-fill { height: 100%; background: #16a34a; width: 0%; transition: width 0.3s ease; }
+.card { background: #fff; border-radius: 14px; padding: 18px 20px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.card h2 { font-size: 18px; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #f4f1ea; padding-bottom: 8px; }
+.badge { font-size: 12px; font-weight: 600; background: #eef2ff; color: #3730a3; padding: 3px 8px; border-radius: 6px; }
+.char-section { border-top: 1px dashed #e5e0d5; padding-top: 14px; margin-top: 14px; }
+.char-section:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+.char-head { display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; }
+.char-info { flex: 1; }
+.char-head .big { font-size: 38px; line-height: 1.15; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.meta { color: #4b5563; font-size: 14.5px; margin-top: 4px; }
+.stroke-box { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; }
+.stroke { width: 150px; height: 150px; border-radius: 10px; border: 2px solid #d6d1c4; background-color: #fff;
+  background-image: linear-gradient(to right, transparent 49.5%, #e5e0d5 49.5%, #e5e0d5 50.5%, transparent 50.5%), linear-gradient(to bottom, transparent 49.5%, #e5e0d5 49.5%, #e5e0d5 50.5%, transparent 50.5%), linear-gradient(45deg, transparent 49.5%, #f3f0e8 49.5%, #f3f0e8 50.5%, transparent 50.5%), linear-gradient(-45deg, transparent 49.5%, #f3f0e8 49.5%, #f3f0e8 50.5%, transparent 50.5%);
+  touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
+.stroke.quiz-active { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.stroke-controls { display: flex; gap: 4px; }
+.btn-sm { font-size: 12px; padding: 5px 9px; border-radius: 6px; border: 1px solid #d1d5db; background: #f9fafb; cursor: pointer; color: #374151; font-weight: 600; }
+.btn-sm:hover { background: #f3f4f6; }
+.btn-sm.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.quiz-status { font-size: 12px; color: #2563eb; min-height: 18px; font-weight: 600; text-align: center; }
+.tts-btn { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; font-size: 14px; padding: 3px 8px; vertical-align: middle; }
+.tts-btn:hover { background: #e5e7eb; }
+.label { font-weight: 700; margin-top: 10px; font-size: 14px; color: #374151; }
+table { border-collapse: collapse; width: 100%; margin: 6px 0; font-size: 13.5px; }
+td, th { border-bottom: 1px solid #ece7db; padding: 5px 6px; text-align: left; vertical-align: top; }
+th { color: #6b7280; font-weight: 600; }
+.mn { background: #fdf6e3; border-left: 3px solid #f59e0b; border-radius: 6px; padding: 8px 12px; font-size: 14px; margin-top: 4px; }
+.colloc { background: #f0fdf4; border-left: 3px solid #16a34a; border-radius: 6px; padding: 8px 12px; font-size: 14px; margin-top: 4px; }
+.sentence-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-top: 6px; }
+.sentence-zh { font-size: 18px; font-weight: 600; }
+.sentence-sub { font-size: 14px; color: #475569; margin-top: 4px; transition: filter 0.2s; }
+.blur { filter: blur(5px); cursor: pointer; user-select: none; }
+.blur:hover { filter: blur(2px); }
+.q-item { margin: 10px 0; padding: 10px 12px; background: #faf8f5; border-radius: 8px; }
+.hint { color: #6b7280; font-size: 13px; }
+.input-check { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; position: relative; }
+.input-check input { padding: 6px 28px 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; width: 185px; }
+.input-check input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+.btn-primary { padding: 6px 12px; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.btn-primary:hover { background: #1d4ed8; }
+.feedback { font-size: 13px; font-weight: 600; margin-left: 4px; }
+.ok { color: #15803d; } .err { color: #b91c1c; }
+
+/* ====== Khung Gợi ý Bộ gõ Pinyin (Hỗ trợ Phân trang) ====== */
+.py-wrap { position: relative; display: inline-block; }
+.py-badge {
+  position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+  font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px;
+  background: #dbeafe; color: #1e40af; pointer-events: none;
+}
+.py-badge.off { background: #e5e7eb; color: #6b7280; }
+.py-popup {
+  display: none; position: absolute; top: calc(100% + 5px); left: 0; z-index: 60;
+  background: #ffffff; border: 1.5px solid #2563eb; border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.16); padding: 7px 9px; min-width: 300px; max-width: 94vw;
+  user-select: none; -webkit-user-select: none;
+}
+.py-popup.show { display: block; }
+.py-header {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 6px;
+}
+.py-code { font-size: 13px; color: #1d4ed8; font-weight: 700; letter-spacing: 0.3px; }
+.py-pager { display: inline-flex; align-items: center; gap: 4px; }
+.py-page-info { font-size: 11.5px; color: #475569; font-weight: 600; min-width: 36px; text-align: center; }
+.py-page-btn {
+  border: 1px solid #cbd5e1; background: #f8fafc; color: #1e293b;
+  border-radius: 5px; padding: 2px 7px; font-size: 11px; font-weight: 700;
+  cursor: pointer; line-height: 1.3; transition: all 0.1s;
+}
+.py-page-btn:hover:not(:disabled) { background: #2563eb; color: #fff; border-color: #2563eb; }
+.py-page-btn:disabled { opacity: 0.35; cursor: default; }
+.py-cand-list { display: flex; flex-wrap: wrap; gap: 5px; min-height: 32px; align-items: center; }
+.py-cand {
+  display: inline-flex; align-items: baseline; gap: 3px; padding: 4px 9px;
+  border-radius: 6px; border: 1px solid #e2e8f0; background: #f8fafc;
+  cursor: pointer; font-size: 16px; font-weight: 600; color: #1e293b; transition: all 0.1s;
+}
+.py-cand:hover, .py-cand.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.py-cand .py-idx { font-size: 11px; color: #64748b; font-weight: 700; margin-right: 1px; }
+.py-cand:hover .py-idx, .py-cand.active .py-idx { color: #dbeafe; }
+.py-footer {
+  margin-top: 5px; padding-top: 4px; border-top: 1px dashed #e2e8f0;
+  font-size: 10.5px; color: #64748b; display: flex; justify-content: space-between;
+}
+
+.mc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+@media (max-width: 520px) { .mc-options { grid-template-columns: 1fr; } }
+.mc-btn { text-align: left; padding: 8px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; font-size: 14.5px; transition: all 0.15s; }
+.mc-btn:hover { background: #f1f5f9; }
+.mc-btn.correct { background: #dcfce7; border-color: #16a34a; color: #14532d; font-weight: 600; }
+.mc-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+.reveal { display: none; margin-top: 8px; font-size: 16px; background: #eff6ff; border-left: 3px solid #2563eb; border-radius: 6px; padding: 6px 10px; }
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+.match-col { display: flex; flex-direction: column; gap: 8px; }
+.match-card { padding: 10px 12px; background: #faf8f5; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; text-align: center; font-weight: 600; font-size: 15px; transition: all 0.15s; user-select: none; }
+.match-card.selected { border-color: #2563eb; background: #eff6ff; color: #1d4ed8; }
+.match-card.matched { border-color: #16a34a; background: #dcfce7; color: #15803d; cursor: default; opacity: 0.65; }
+.match-card.wrong-flash { border-color: #dc2626; background: #fee2e2; }
+.cloze-passage { font-size: 16.5px; line-height: 2.1; background: #faf8f5; padding: 14px; border-radius: 10px; }
+.cloze-select { font-size: 15px; padding: 3px 6px; border: 1px solid #94a3b8; border-radius: 6px; background: #fff; font-weight: 600; color: #1e293b; }
+
+/* ====== Bài đọc hiểu đoạn văn ====== */
+.reading-box {
+  background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #2563eb;
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+}
+.reading-zh { font-size: 17.5px; line-height: 1.95; font-weight: 500; color: #1e293b; }
+.reading-Controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.reading-help {
+  display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1;
+  font-size: 14px; color: #475569; line-height: 1.65;
+}
+.reading-help.show { display: block; }
+
+.scramble-box { margin: 12px 0; padding: 12px; background: #faf8f5; border-radius: 10px; }
+.word-bank, .answer-zone { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; padding: 8px; border-radius: 8px; margin-top: 6px; align-items: center; }
+.word-bank { background: #eef2f6; }
+.answer-zone { background: #fff; border: 1px dashed #94a3b8; }
+.tile { padding: 5px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.05); user-select: none; }
+.tile:hover { background: #f1f5f9; }
+.summary-list { font-size: 14px; margin: 8px 0; padding-left: 18px; }
+.footer { color: #6b7280; font-size: 14px; text-align: center; margin-top: 24px; }
+
+/* ====== Tối ưu điện thoại (bổ sung 2026-11-04 theo phản hồi của anh) ====== */
+img, svg { max-width: 100%; }
+@media (max-width: 640px) {
+  .wrap { padding: 10px 10px 40px; }
+  h1 { font-size: 19px; }
+  .card { padding: 14px 13px; margin: 12px 0; border-radius: 12px; }
+  .card h2 { font-size: 16px; flex-wrap: wrap; gap: 6px; }
+  .char-head { flex-direction: column; }
+  .char-info { width: 100%; }
+  .stroke-box { align-self: center; }
+  .char-head .big { font-size: 34px; }
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px; }
+  .input-check input { width: auto; flex: 1 1 130px; min-width: 0; }
+  .py-wrap { flex: 1 1 130px; min-width: 0; }
+  .py-wrap input { width: 100%; }
+  .py-popup { min-width: 0; width: min(320px, 92vw); }
+  .cloze-passage { font-size: 15.5px; line-height: 2.0; padding: 11px; }
+  .cloze-select { max-width: 40vw; }
+  .reading-zh { font-size: 16.5px; }
+  .sentence-zh { font-size: 17px; }
+  .progress-bar { font-size: 12px; }
+  .mc-btn { font-size: 14px; }
+}
+
+/* ====== Pinyin ruby trên đầu chữ Hán (phần đoạn văn) ====== */
+.reading-zh { line-height: 2.15; }
+.reading-zh ruby rt { font-size: 0.52em; color: #2563eb; font-weight: 400; }
+.reading-zh.hide-ruby { line-height: 1.95; }
+.reading-zh.hide-ruby rt { display: none; }
+
+
+  /* ====== Flashcard ôn tập ====== */
+  .flash-scene { perspective: 900px; margin: 10px 0; position: relative; }
+  .flash-nav-hint { position: absolute; top: 50%; transform: translateY(-50%); font-size: 30px; font-weight: 800; color: rgba(30, 58, 138, .30); z-index: 2; pointer-events: none; line-height: 1; }
+  .flash-nav-hint.left { left: 8px; }
+  .flash-nav-hint.right { right: 8px; }
+  .flash-card { position: relative; width: 100%; height: 170px; cursor: pointer; transform-style: preserve-3d; transition: transform 0.55s; }
+  .flash-card.flipped { transform: rotateY(180deg); }
+  .flash-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border-radius: 14px; padding: 14px; text-align: center; }
+  .flash-front { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px solid #93c5fd; }
+  .flash-back { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 2px solid #6ee7b7; transform: rotateY(180deg); }
+  .flash-hanzi { font-size: 2.6rem; font-weight: 800; color: #1e3a8a; line-height: 1.15; }
+  .flash-meaning { font-size: 1.45rem; font-weight: 700; color: #065f46; line-height: 1.3; }
+  .flash-sub { font-size: 1rem; color: #475569; }
+  .flash-tag { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; color: #64748b; text-transform: uppercase; }
+  .flash-Controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+  .flash-count { font-weight: 700; color: #334155; }
+
+/* --- Che bằng khối màu (thay blur) --- */
+.sentence-sub.cover { cursor: pointer; border-radius: 8px; padding: 6px 8px; }
+.sentence-sub.cover.covered { background: #e7dfcf; color: transparent; user-select: none; position: relative; }
+.sentence-sub.cover.covered::after { content: "👁 Bấm để xem pinyin + dịch nghĩa"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 13px; font-weight: 600; }
+/* --- Nghĩa tiếng Việt của từ mới (ngay dưới tiêu đề thẻ từ) --- */
+.word-meaning { font-size: 15px; color: #1e293b; margin: 2px 0 10px; }
+/* --- Bài 7 Đọc hiểu: đoạn văn dạng đoạn liền mạch + thẻ câu hỏi (mẫu HSK 3) --- */
+.read-para { background: #fffdf6; border: 1px solid #eadfc8; border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+/* --- Bỏ viền trái màu đậm, chỉ tô màu nền (theo ý anh 06/11) --- */
+.mn { border: 1px solid #f5d9a8; border-left: none; }
+.colloc { border: 1px solid #bbf7d0; border-left: none; }
+.reveal { border: 1px solid #bfdbfe; border-left: none; }
+.reading-box { background: #eff6ff; border-left: none; }
+/* --- Chỗ trống điền từ hiển thị dạng "......" không gạch chân, bấm vào mới hiện danh sách từ (theo ý anh 06/11) --- */
+.cloze-select { border: none; border-radius: 0; background: transparent; padding: 3px 2px; min-width: 90px; text-align: center; appearance: none; -webkit-appearance: none; }
+.cloze-select::-ms-expand { display: none; }
+/* --- Bài 4 Ngữ pháp mới: hộp giới thiệu điểm ngữ pháp + ví dụ (theo ý anh 06/11) --- */
+.gram-intro { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px; padding: 12px 14px; margin: 10px 0; line-height: 1.7; }
+.gram-ex { margin: 8px 0; font-size: 16px; line-height: 1.9; }
+.gram-blank { font-weight: 700; letter-spacing: 1px; }
+.read-para-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.read-para-text { font-size: 19px; line-height: 2.15; text-align: justify; text-indent: 2em; margin: 0; color: #1e293b; }
+.read-para-trans { margin: 10px 0; font-size: 14px; color: #475569; line-height: 1.65; }
+.read-para-trans b { color: #92400e; }
+.read-para-trans p { margin: 2px 0 0; }
+.read-q { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+.read-q-head { display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; font-weight: 600; margin-bottom: 6px; }
+.read-q-num { flex: none; width: 26px; height: 26px; border-radius: 50%; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-top: 1px; }
+
+.dlg-line{padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;background:#fff}
+.dlg-sp{display:inline-block;padding:2px 9px;border-radius:12px;color:#fff;font-weight:700;font-size:13px;margin-right:8px;vertical-align:middle}
+.dlg-zh{font-size:17px;line-height:1.9}
+.dlg-zh ruby rt{font-size:.52em;color:#2563eb}
+.dlg-zh.hide-ruby rt{display:none}
+.dlg-vi{color:#64748b;font-size:14px;margin:2px 0 0 30px}
+.dlg-voice-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.dlg-voice-row select{flex:1;min-width:120px;max-width:100%;padding:4px 6px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+/* --- Nút điều khiển Bài 8 gọn: chỉ icon, không chữ; tốc độ cùng hàng (theo ý anh 06/11) --- */
+.dlg-controls-row input[type=range]{flex:1;min-width:60px;vertical-align:middle}
+.dlg-controls-row input[type=number]{width:64px;padding:4px 6px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+.dlg-play-btn{font-size:16px;padding:5px 12px;min-width:44px}
+.dlg-icon-btn.dlg-btn-on{background:#dbeafe;border-color:#93c5fd}
+.dlg-pinyin-btn{font-weight:700;border-radius:6px;padding:4px 10px;cursor:pointer}
+.dlg-pinyin-btn.on{background:#2563eb;color:#fff;border:1px solid #2563eb}
+.dlg-pinyin-btn.off{background:#e5e7eb;color:#6b7280;border:1px solid #d1d5db}
+
+.tts-voice-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.tts-voice-row select{flex:1;min-width:120px;max-width:100%;padding:4px 6px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+
+table.lookup{border-collapse:collapse;width:100%;font-size:15px}
+table.lookup th,table.lookup td{border:1px solid #e2e8f0;padding:6px 8px;text-align:left;vertical-align:top}
+table.lookup th{background:#f1f5f9;position:sticky;top:0}
+.rad-big{font-size:34px;line-height:1.1}
+.rad-cell{font-size:26px}
+.poem-box{background:#fdf6e3;border:1px solid #f5d9a8;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:16px;line-height:1.9}
+.theory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.theory-card{border:1px solid #e2e8f0;border-radius:10px;padding:12px;background:#fff}
+.theory-head{display:flex;gap:12px;align-items:center}
+.theory-char{font-size:52px;line-height:1}
+.confuse-note{color:#b45309;font-size:14px;margin-top:6px}
+.var-badge{background:#dbeafe;border:1px solid #2563eb;border-radius:999px;padding:1px 8px;font-size:12px}
+.kho-badge{background:#fef3c7;border:1px solid #f59e0b;border-radius:999px;padding:1px 8px;font-size:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.toolbar input,.toolbar select{padding:8px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px}
+</style></head><body><div class="wrap"><h1>📚 Học 214 Bộ Thủ Chữ Hán</h1><div class="sub">Bộ bài riêng cho Anh: đủ 214 bộ thủ theo thứ tự Khang Hy (đúng bảng PDF anh gửi), lồng bài thơ “214 bộ thủ qua thơ” 7 khổ trong từng thẻ bộ, kèm dạng giản thể + biến thể trong chữ để nối thẳng với chiết tự ở các khóa HSK.</div><div class="card"><h2>Cách học</h2><div>Mỗi Day học <b>10 bộ</b> (Day 22 học 4 bộ cuối): Bài 1 ôn bài cũ → Flashcard 20 bộ gần nhất → Bài 2 nghe chọn bộ → Bài 3 ghép cặp → <b>Bài 4 thẻ bộ chi tiết</b> (mẹo nhớ, chữ ví dụ, cặp dễ nhầm) → Bài 5/6 luyện nhận diện và sắp xếp câu → Bài 7 đọc hiểu → Bài 8 nghe hội thoại → Bài phụ luyện biến thể và số nét.<br>Học xong 22 Day, dùng <a href="Tra-Cuu-214-Bo-Thu.html"><b>Bảng tra cứu 214 bộ</b></a> để tra nhanh theo số nét hoặc tìm kiếm, và <a href="Bai-Hoc-Tong-Ket-Bo-Thu.html"><b>Bài tổng kết</b></a> để ôn cả 214 bộ bằng flashcard + 30 câu trắc nghiệm + ghép cặp.<br>Chú ý: bảng PDF gốc có một lỗi pinyin — bộ 麥 in là <i>mò</i>, đúng là <b>mài</b> — bộ bài đã sửa. Thơ dân gian vài chỗ nói nôm na (vd 麻 thơ nói “vừng”, nghĩa chuẩn là “cây gai”), bài học luôn theo nghĩa chuẩn trong thẻ bộ.</div></div><div class="card"><h2>Lịch học 22 Day</h2><table class="lookup"><tr><th>Day</th><th>Bộ số</th><th>Số nét</th><th>Các bộ trong Day</th></tr><tr><td><a href="Day-01.html"><b>Day 1</b></a></td><td>1–10</td><td>1–2 nét</td><td>一 nhất · 丨 cổn · 丶 chủ · 丿 phiệt · 乙 ất · 亅 quyết · 二 nhị · 亠 đầu · 人 nhân · 儿 nhân</td></tr><tr><td><a href="Day-02.html"><b>Day 2</b></a></td><td>11–20</td><td>2 nét</td><td>入 nhập · 八 bát · 冂 quynh · 冖 mịch · 冫 băng · 几 kỷ · 凵 khảm · 刀 đao · 力 lực · 勹 bao</td></tr><tr><td><a href="Day-03.html"><b>Day 3</b></a></td><td>21–30</td><td>2–3 nét</td><td>匕 chuỷ · 匚 phương · 匸 hễ · 十 thập · 卜 bốc · 卩 tiết · 厂 hán · 厶 khư · 又 hựu · 口 khẩu</td></tr><tr><td><a href="Day-04.html"><b>Day 4</b></a></td><td>31–40</td><td>3 nét</td><td>囗 vi · 土 thổ · 士 sĩ · 夂 tuy · 夊 truy · 夕 tịch · 大 đại · 女 nữ · 子 tử · 宀 miên</td></tr><tr><td><a href="Day-05.html"><b>Day 5</b></a></td><td>41–50</td><td>3 nét</td><td>寸 thốn · 小 tiểu · 尢 uông · 尸 thi · 屮 triệt · 山 sơn · 川 xuyên · 工 công · 己 kỷ · 巾 cân</td></tr><tr><td><a href="Day-06.html"><b>Day 6</b></a></td><td>51–60</td><td>3 nét</td><td>干 can · 幺 yêu · 广 nghiễm · 廴 dẫn · 廾 củng · 弋 dặc · 弓 cung · 彐 kệ · 彡 sam · 彳 xích</td></tr><tr><td><a href="Day-07.html"><b>Day 7</b></a></td><td>61–70</td><td>4 nét</td><td>心 tâm · 戈 qua · 户 hộ · 手 thủ · 支 chi · 攴 phộc · 文 văn · 斗 đầu · 斤 cân · 方 phương</td></tr><tr><td><a href="Day-08.html"><b>Day 8</b></a></td><td>71–80</td><td>4 nét</td><td>无 vô · 日 nhật · 曰 viết · 月 nguyệt · 木 mộc · 欠 khiếm · 止 chỉ · 歹 đãi · 殳 thù · 毋 vô</td></tr><tr><td><a href="Day-09.html"><b>Day 9</b></a></td><td>81–90</td><td>4 nét</td><td>比 tỷ · 毛 mao · 氏 thị · 气 khí · 水 thủy · 火 hỏa · 爪 trảo · 父 phụ · 爻 hào · 爿 tường</td></tr><tr><td><a href="Day-10.html"><b>Day 10</b></a></td><td>91–100</td><td>4–5 nét</td><td>片 phiến · 牙 nha · 牛 ngưu · 犬 khuyển · 玄 huyền · 玉 ngọc · 瓜 qua · 瓦 ngõa · 甘 cam · 生 sinh</td></tr><tr><td><a href="Day-11.html"><b>Day 11</b></a></td><td>101–110</td><td>5 nét</td><td>用 dụng · 田 điền · 疋 thất · 疒 nạch · 癶 bát · 白 bạch · 皮 bì · 皿 mãnh · 目 mục · 矛 mâu</td></tr><tr><td><a href="Day-12.html"><b>Day 12</b></a></td><td>111–120</td><td>5–6 nét</td><td>矢 thỉ · 石 thạch · 示 thị · 禸 nhựu · 禾 hòa · 穴 huyệt · 立 lập · 竹 trúc · 米 mễ · 糸 mịch</td></tr><tr><td><a href="Day-13.html"><b>Day 13</b></a></td><td>121–130</td><td>6 nét</td><td>缶 phẫu · 网 võng · 羊 dương · 羽 vũ · 老 lão · 而 nhi · 耒 lỗi · 耳 nhĩ · 聿 duật · 肉 nhục</td></tr><tr><td><a href="Day-14.html"><b>Day 14</b></a></td><td>131–140</td><td>6 nét</td><td>臣 thần · 自 tự · 至 chí · 臼 cữu · 舌 thiệt · 舛 suyễn · 舟 chu · 艮 cấn · 色 sắc · 艸 thảo</td></tr><tr><td><a href="Day-15.html"><b>Day 15</b></a></td><td>141–150</td><td>6–7 nét</td><td>虍 hồ · 虫 trùng · 血 huyết · 行 hành · 衣 y · 襾 á · 见 kiến · 角 giác · 言 ngôn · 谷 cốc</td></tr><tr><td><a href="Day-16.html"><b>Day 16</b></a></td><td>151–160</td><td>7 nét</td><td>豆 đậu · 豕 thỉ · 豸 trãi · 贝 bối · 赤 xích · 走 tẩu · 足 túc · 身 thân · 车 xa · 辛 tân</td></tr><tr><td><a href="Day-17.html"><b>Day 17</b></a></td><td>161–170</td><td>7–8 nét</td><td>辰 thần · 辵 sước · 邑 ấp · 酉 dậu · 釆 biện · 里 lý · 金 kim · 长 trường · 门 môn · 阜 phụ</td></tr><tr><td><a href="Day-18.html"><b>Day 18</b></a></td><td>171–180</td><td>8–9 nét</td><td>隶 đãi · 隹 truy · 雨 vũ · 青 thanh · 非 phi · 面 diện · 革 cách · 韦 vi · 韭 phỉ · 音 âm</td></tr><tr><td><a href="Day-19.html"><b>Day 19</b></a></td><td>181–190</td><td>9–10 nét</td><td>页 hiệt · 风 phong · 飞 phi · 食 thực · 首 thủ · 香 hương · 马 mã · 骨 cốt · 高 cao · 髟 bưu</td></tr><tr><td><a href="Day-20.html"><b>Day 20</b></a></td><td>191–200</td><td>10–11 nét</td><td>斗 đấu · 鬯 sưởng · 鬲 cách · 鬼 quỷ · 鱼 ngư · 鸟 điểu · 卤 lỗ · 鹿 lộc · 麦 mạch · 麻 ma</td></tr><tr><td><a href="Day-21.html"><b>Day 21</b></a></td><td>201–210</td><td>12–14 nét</td><td>黄 hoàng · 黍 thử · 黑 hắc · 黹 chỉ · 黾 mãnh · 鼎 đỉnh · 鼓 cổ · 鼠 thử · 鼻 tỵ · 齐 tề</td></tr><tr><td><a href="Day-22.html"><b>Day 22</b></a></td><td>211–214</td><td>15–17 nét</td><td>齿 xỉ · 龙 long · 龟 quy · 龠 dược</td></tr></table></div><div class="footer"><a href="Tra-Cuu-214-Bo-Thu.html">Tra cứu 214 bộ</a> · <a href="Bai-Hoc-Tong-Ket-Bo-Thu.html">Bài tổng kết</a></div></div></body></html>

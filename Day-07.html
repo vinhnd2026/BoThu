@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>214 Bộ Thủ — Day 7</title><style>
+* { box-sizing: border-box; }
+body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; margin: 0; background: #f4f1ea; color: #22252b; line-height: 1.55; }
+.wrap { max-width: 740px; margin: 0 auto; padding: 12px 14px 50px; }
+h1 { font-size: 22px; margin: 10px 0 4px; }
+.sub { color: #6b7280; font-size: 14px; margin-bottom: 14px; }
+.progress-bar { position: sticky; top: 0; z-index: 30; background: rgba(244,241,234,0.96); backdrop-filter: blur(4px); padding: 8px 0; border-bottom: 1px solid #e2ddd2; display: flex; justify-content: space-between; align-items: center; font-size: 13px; gap: 6px; flex-wrap: wrap; }
+.progress-track { flex: 1; min-width: 80px; height: 8px; background: #e2ddd2; border-radius: 4px; margin: 0 6px; overflow: hidden; }
+.progress-fill { height: 100%; background: #16a34a; width: 0%; transition: width 0.3s ease; }
+.card { background: #fff; border-radius: 14px; padding: 18px 20px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.card h2 { font-size: 18px; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #f4f1ea; padding-bottom: 8px; }
+.badge { font-size: 12px; font-weight: 600; background: #eef2ff; color: #3730a3; padding: 3px 8px; border-radius: 6px; }
+.char-section { border-top: 1px dashed #e5e0d5; padding-top: 14px; margin-top: 14px; }
+.char-section:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+.char-head { display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; }
+.char-info { flex: 1; }
+.char-head .big { font-size: 38px; line-height: 1.15; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.meta { color: #4b5563; font-size: 14.5px; margin-top: 4px; }
+.stroke-box { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; }
+.stroke { width: 150px; height: 150px; border-radius: 10px; border: 2px solid #d6d1c4; background-color: #fff;
+  background-image: linear-gradient(to right, transparent 49.5%, #e5e0d5 49.5%, #e5e0d5 50.5%, transparent 50.5%), linear-gradient(to bottom, transparent 49.5%, #e5e0d5 49.5%, #e5e0d5 50.5%, transparent 50.5%), linear-gradient(45deg, transparent 49.5%, #f3f0e8 49.5%, #f3f0e8 50.5%, transparent 50.5%), linear-gradient(-45deg, transparent 49.5%, #f3f0e8 49.5%, #f3f0e8 50.5%, transparent 50.5%);
+  touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
+.stroke.quiz-active { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.stroke-controls { display: flex; gap: 4px; }
+.btn-sm { font-size: 12px; padding: 5px 9px; border-radius: 6px; border: 1px solid #d1d5db; background: #f9fafb; cursor: pointer; color: #374151; font-weight: 600; }
+.btn-sm:hover { background: #f3f4f6; }
+.btn-sm.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.quiz-status { font-size: 12px; color: #2563eb; min-height: 18px; font-weight: 600; text-align: center; }
+.tts-btn { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; font-size: 14px; padding: 3px 8px; vertical-align: middle; }
+.tts-btn:hover { background: #e5e7eb; }
+.label { font-weight: 700; margin-top: 10px; font-size: 14px; color: #374151; }
+table { border-collapse: collapse; width: 100%; margin: 6px 0; font-size: 13.5px; }
+td, th { border-bottom: 1px solid #ece7db; padding: 5px 6px; text-align: left; vertical-align: top; }
+th { color: #6b7280; font-weight: 600; }
+.mn { background: #fdf6e3; border-left: 3px solid #f59e0b; border-radius: 6px; padding: 8px 12px; font-size: 14px; margin-top: 4px; }
+.colloc { background: #f0fdf4; border-left: 3px solid #16a34a; border-radius: 6px; padding: 8px 12px; font-size: 14px; margin-top: 4px; }
+.sentence-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-top: 6px; }
+.sentence-zh { font-size: 18px; font-weight: 600; }
+.sentence-sub { font-size: 14px; color: #475569; margin-top: 4px; transition: filter 0.2s; }
+.blur { filter: blur(5px); cursor: pointer; user-select: none; }
+.blur:hover { filter: blur(2px); }
+.q-item { margin: 10px 0; padding: 10px 12px; background: #faf8f5; border-radius: 8px; }
+.hint { color: #6b7280; font-size: 13px; }
+.input-check { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; position: relative; }
+.input-check input { padding: 6px 28px 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; width: 185px; }
+.input-check input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+.btn-primary { padding: 6px 12px; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.btn-primary:hover { background: #1d4ed8; }
+.feedback { font-size: 13px; font-weight: 600; margin-left: 4px; }
+.ok { color: #15803d; } .err { color: #b91c1c; }
+
+/* ====== Khung Gợi ý Bộ gõ Pinyin (Hỗ trợ Phân trang) ====== */
+.py-wrap { position: relative; display: inline-block; }
+.py-badge {
+  position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+  font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px;
+  background: #dbeafe; color: #1e40af; pointer-events: none;
+}
+.py-badge.off { background: #e5e7eb; color: #6b7280; }
+.py-popup {
+  display: none; position: absolute; top: calc(100% + 5px); left: 0; z-index: 60;
+  background: #ffffff; border: 1.5px solid #2563eb; border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.16); padding: 7px 9px; min-width: 300px; max-width: 94vw;
+  user-select: none; -webkit-user-select: none;
+}
+.py-popup.show { display: block; }
+.py-header {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 6px;
+}
+.py-code { font-size: 13px; color: #1d4ed8; font-weight: 700; letter-spacing: 0.3px; }
+.py-pager { display: inline-flex; align-items: center; gap: 4px; }
+.py-page-info { font-size: 11.5px; color: #475569; font-weight: 600; min-width: 36px; text-align: center; }
+.py-page-btn {
+  border: 1px solid #cbd5e1; background: #f8fafc; color: #1e293b;
+  border-radius: 5px; padding: 2px 7px; font-size: 11px; font-weight: 700;
+  cursor: pointer; line-height: 1.3; transition: all 0.1s;
+}
+.py-page-btn:hover:not(:disabled) { background: #2563eb; color: #fff; border-color: #2563eb; }
+.py-page-btn:disabled { opacity: 0.35; cursor: default; }
+.py-cand-list { display: flex; flex-wrap: wrap; gap: 5px; min-height: 32px; align-items: center; }
+.py-cand {
+  display: inline-flex; align-items: baseline; gap: 3px; padding: 4px 9px;
+  border-radius: 6px; border: 1px solid #e2e8f0; background: #f8fafc;
+  cursor: pointer; font-size: 16px; font-weight: 600; color: #1e293b; transition: all 0.1s;
+}
+.py-cand:hover, .py-cand.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.py-cand .py-idx { font-size: 11px; color: #64748b; font-weight: 700; margin-right: 1px; }
+.py-cand:hover .py-idx, .py-cand.active .py-idx { color: #dbeafe; }
+.py-footer {
+  margin-top: 5px; padding-top: 4px; border-top: 1px dashed #e2e8f0;
+  font-size: 10.5px; color: #64748b; display: flex; justify-content: space-between;
+}
+
+.mc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+@media (max-width: 520px) { .mc-options { grid-template-columns: 1fr; } }
+.mc-btn { text-align: left; padding: 8px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; font-size: 14.5px; transition: all 0.15s; }
+.mc-btn:hover { background: #f1f5f9; }
+.mc-btn.correct { background: #dcfce7; border-color: #16a34a; color: #14532d; font-weight: 600; }
+.mc-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+.reveal { display: none; margin-top: 8px; font-size: 16px; background: #eff6ff; border-left: 3px solid #2563eb; border-radius: 6px; padding: 6px 10px; }
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+.match-col { display: flex; flex-direction: column; gap: 8px; }
+.match-card { padding: 10px 12px; background: #faf8f5; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; text-align: center; font-weight: 600; font-size: 15px; transition: all 0.15s; user-select: none; }
+.match-card.selected { border-color: #2563eb; background: #eff6ff; color: #1d4ed8; }
+.match-card.matched { border-color: #16a34a; background: #dcfce7; color: #15803d; cursor: default; opacity: 0.65; }
+.match-card.wrong-flash { border-color: #dc2626; background: #fee2e2; }
+.cloze-passage { font-size: 16.5px; line-height: 2.1; background: #faf8f5; padding: 14px; border-radius: 10px; }
+.cloze-select { font-size: 15px; padding: 3px 6px; border: 1px solid #94a3b8; border-radius: 6px; background: #fff; font-weight: 600; color: #1e293b; }
+
+/* ====== Bài đọc hiểu đoạn văn ====== */
+.reading-box {
+  background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #2563eb;
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+}
+.reading-zh { font-size: 17.5px; line-height: 1.95; font-weight: 500; color: #1e293b; }
+.reading-Controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.reading-help {
+  display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1;
+  font-size: 14px; color: #475569; line-height: 1.65;
+}
+.reading-help.show { display: block; }
+
+.scramble-box { margin: 12px 0; padding: 12px; background: #faf8f5; border-radius: 10px; }
+.word-bank, .answer-zone { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; padding: 8px; border-radius: 8px; margin-top: 6px; align-items: center; }
+.word-bank { background: #eef2f6; }
+.answer-zone { background: #fff; border: 1px dashed #94a3b8; }
+.tile { padding: 5px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.05); user-select: none; }
+.tile:hover { background: #f1f5f9; }
+.summary-list { font-size: 14px; margin: 8px 0; padding-left: 18px; }
+.footer { color: #6b7280; font-size: 14px; text-align: center; margin-top: 24px; }
+
+/* ====== Tối ưu điện thoại (bổ sung 2026-11-04 theo phản hồi của anh) ====== */
+img, svg { max-width: 100%; }
+@media (max-width: 640px) {
+  .wrap { padding: 10px 10px 40px; }
+  h1 { font-size: 19px; }
+  .card { padding: 14px 13px; margin: 12px 0; border-radius: 12px; }
+  .card h2 { font-size: 16px; flex-wrap: wrap; gap: 6px; }
+  .char-head { flex-direction: column; }
+  .char-info { width: 100%; }
+  .stroke-box { align-self: center; }
+  .char-head .big { font-size: 34px; }
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px; }
+  .input-check input { width: auto; flex: 1 1 130px; min-width: 0; }
+  .py-wrap { flex: 1 1 130px; min-width: 0; }
+  .py-wrap input { width: 100%; }
+  .py-popup { min-width: 0; width: min(320px, 92vw); }
+  .cloze-passage { font-size: 15.5px; line-height: 2.0; padding: 11px; }
+  .cloze-select { max-width: 40vw; }
+  .reading-zh { font-size: 16.5px; }
+  .sentence-zh { font-size: 17px; }
+  .progress-bar { font-size: 12px; }
+  .mc-btn { font-size: 14px; }
+}
+
+/* ====== Pinyin ruby trên đầu chữ Hán (phần đoạn văn) ====== */
+.reading-zh { line-height: 2.15; }
+.reading-zh ruby rt { font-size: 0.52em; color: #2563eb; font-weight: 400; }
+.reading-zh.hide-ruby { line-height: 1.95; }
+.reading-zh.hide-ruby rt { display: none; }
+
+
+  /* ====== Flashcard ôn tập ====== */
+  .flash-scene { perspective: 900px; margin: 10px 0; position: relative; }
+  .flash-nav-hint { position: absolute; top: 50%; transform: translateY(-50%); font-size: 30px; font-weight: 800; color: rgba(30, 58, 138, .30); z-index: 2; pointer-events: none; line-height: 1; }
+  .flash-nav-hint.left { left: 8px; }
+  .flash-nav-hint.right { right: 8px; }
+  .flash-card { position: relative; width: 100%; height: 170px; cursor: pointer; transform-style: preserve-3d; transition: transform 0.55s; }
+  .flash-card.flipped { transform: rotateY(180deg); }
+  .flash-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border-radius: 14px; padding: 14px; text-align: center; }
+  .flash-front { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px solid #93c5fd; }
+  .flash-back { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 2px solid #6ee7b7; transform: rotateY(180deg); }
+  .flash-hanzi { font-size: 2.6rem; font-weight: 800; color: #1e3a8a; line-height: 1.15; }
+  .flash-meaning { font-size: 1.45rem; font-weight: 700; color: #065f46; line-height: 1.3; }
+  .flash-sub { font-size: 1rem; color: #475569; }
+  .flash-tag { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; color: #64748b; text-transform: uppercase; }
+  .flash-Controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+  .flash-count { font-weight: 700; color: #334155; }
+
+/* --- Che bằng khối màu (thay blur) --- */
+.sentence-sub.cover { cursor: pointer; border-radius: 8px; padding: 6px 8px; }
+.sentence-sub.cover.covered { background: #e7dfcf; color: transparent; user-select: none; position: relative; }
+.sentence-sub.cover.covered::after { content: "👁 Bấm để xem pinyin + dịch nghĩa"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 13px; font-weight: 600; }
+/* --- Nghĩa tiếng Việt của từ mới (ngay dưới tiêu đề thẻ từ) --- */
+.word-meaning { font-size: 15px; color: #1e293b; margin: 2px 0 10px; }
+/* --- Bài 7 Đọc hiểu: đoạn văn dạng đoạn liền mạch + thẻ câu hỏi (mẫu HSK 3) --- */
+.read-para { background: #fffdf6; border: 1px solid #eadfc8; border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+/* --- Bỏ viền trái màu đậm, chỉ tô màu nền (theo ý anh 06/11) --- */
+.mn { border: 1px solid #f5d9a8; border-left: none; }
+.colloc { border: 1px solid #bbf7d0; border-left: none; }
+.reveal { border: 1px solid #bfdbfe; border-left: none; }
+.reading-box { background: #eff6ff; border-left: none; }
+/* --- Chỗ trống điền từ hiển thị dạng "......" không gạch chân, bấm vào mới hiện danh sách từ (theo ý anh 06/11) --- */
+.cloze-select { border: none; border-radius: 0; background: transparent; padding: 3px 2px; min-width: 90px; text-align: center; appearance: none; -webkit-appearance: none; }
+.cloze-select::-ms-expand { display: none; }
+/* --- Bài 4 Ngữ pháp mới: hộp giới thiệu điểm ngữ pháp + ví dụ (theo ý anh 06/11) --- */
+.gram-intro { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px; padding: 12px 14px; margin: 10px 0; line-height: 1.7; }
+.gram-ex { margin: 8px 0; font-size: 16px; line-height: 1.9; }
+.gram-blank { font-weight: 700; letter-spacing: 1px; }
+.read-para-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.read-para-text { font-size: 19px; line-height: 2.15; text-align: justify; text-indent: 2em; margin: 0; color: #1e293b; }
+.read-para-trans { margin: 10px 0; font-size: 14px; color: #475569; line-height: 1.65; }
+.read-para-trans b { color: #92400e; }
+.read-para-trans p { margin: 2px 0 0; }
+.read-q { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+.read-q-head { display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; font-weight: 600; margin-bottom: 6px; }
+.read-q-num { flex: none; width: 26px; height: 26px; border-radius: 50%; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-top: 1px; }
+
+.dlg-line{padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;background:#fff}
+.dlg-sp{display:inline-block;padding:2px 9px;border-radius:12px;color:#fff;font-weight:700;font-size:13px;margin-right:8px;vertical-align:middle}
+.dlg-zh{font-size:17px;line-height:1.9}
+.dlg-zh ruby rt{font-size:.52em;color:#2563eb}
+.dlg-zh.hide-ruby rt{display:none}
+.dlg-vi{color:#64748b;font-size:14px;margin:2px 0 0 30px}
+.dlg-voice-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.dlg-voice-row select{flex:1;min-width:120px;max-width:100%;padding:4px 6px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+/* --- Nút điều khiển Bài 8 gọn: chỉ icon, không chữ; tốc độ cùng hàng (theo ý anh 06/11) --- */
+.dlg-controls-row input[type=range]{flex:1;min-width:60px;vertical-align:middle}
+.dlg-controls-row input[type=number]{width:64px;padding:4px 6px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+.dlg-play-btn{font-size:16px;padding:5px 12px;min-width:44px}
+.dlg-icon-btn.dlg-btn-on{background:#dbeafe;border-color:#93c5fd}
+.dlg-pinyin-btn{font-weight:700;border-radius:6px;padding:4px 10px;cursor:pointer}
+.dlg-pinyin-btn.on{background:#2563eb;color:#fff;border:1px solid #2563eb}
+.dlg-pinyin-btn.off{background:#e5e7eb;color:#6b7280;border:1px solid #d1d5db}
+
+.tts-voice-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.tts-voice-row select{flex:1;min-width:120px;max-width:100%;padding:4px 6px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+
+table.lookup{border-collapse:collapse;width:100%;font-size:15px}
+table.lookup th,table.lookup td{border:1px solid #e2e8f0;padding:6px 8px;text-align:left;vertical-align:top}
+table.lookup th{background:#f1f5f9;position:sticky;top:0}
+.rad-big{font-size:34px;line-height:1.1}
+.rad-cell{font-size:26px}
+.poem-box{background:#fdf6e3;border:1px solid #f5d9a8;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:16px;line-height:1.9}
+.theory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.theory-card{border:1px solid #e2e8f0;border-radius:10px;padding:12px;background:#fff}
+.theory-head{display:flex;gap:12px;align-items:center}
+.theory-char{font-size:52px;line-height:1}
+.confuse-note{color:#b45309;font-size:14px;margin-top:6px}
+.var-badge{background:#dbeafe;border:1px solid #2563eb;border-radius:999px;padding:1px 8px;font-size:12px}
+.kho-badge{background:#fef3c7;border:1px solid #f59e0b;border-radius:999px;padding:1px 8px;font-size:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.toolbar input,.toolbar select{padding:8px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px}
+</style></head><body><div class="wrap">
+<div class="progress-bar"><span>🎯 Tiến độ:</span><div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div><b id="prog-text">0 / 0</b><button class="btn-sm" onclick="resetAll()" title="Xoá tiến độ làm lại">↺ Làm lại</button></div>
+<h1>📚 214 Bộ Thủ — Day 7</h1>
+<div class="sub">10 bộ mới (số 61–70 theo Khang Hy): 心 tâm · 戈 qua · 户 hộ · 手 thủ · 支 chi · 攴 phộc · 文 văn · 斗 đầu · 斤 cân · 方 phương</div>
+<div class="sub">Học theo thứ tự: xem thẻ bộ ở Bài 4 trước cũng được, hoặc làm Bài 1–3 để ôn bài cũ rồi quay lại. Mỗi bộ đều có dạng giản thể, biến thể trong chữ, mẹo nhớ và chữ ví dụ.</div>
+<div class="card"><h2>⏰ Bài 1: Ôn nhanh bài cũ <span class="badge">Nhận diện bộ thủ</span></h2>
+<div class="q-item" id="b1-1" data-q="Bài 1 câu 1: bộ Hán Việt &#x27;dặc&#x27;"><div><b>Câu 1.</b> Bộ thủ nào có Hán Việt là “dặc” (yì), nghĩa “bắn, chiếm lấy; cọc có dây để bắn”?</div><div class="mc-options"><button class="mc-btn" data-correct="1" onclick="checkMC(this)">弋</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">干</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">巾</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">尸</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b1-2" data-q="Bài 1 câu 2: bộ Hán Việt &#x27;cung&#x27;"><div><b>Câu 2.</b> Bộ thủ nào có Hán Việt là “cung” (gōng), nghĩa “cái cung bắn tên”?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">干</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">弓</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">彡</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">己</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b1-3" data-q="Bài 1 câu 3: bộ Hán Việt &#x27;kệ&#x27;"><div><b>Câu 3.</b> Bộ thủ nào có Hán Việt là “kệ” (jì), nghĩa “đầu con heo, mõm heo”?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">屮</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">川</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">彐</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">廴</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b1-4" data-q="Bài 1 câu 4: bộ Hán Việt &#x27;sam&#x27;"><div><b>Câu 4.</b> Bộ thủ nào có Hán Việt là “sam” (shān), nghĩa “lông tóc dài, râu; trang sức bằng lông”?</div><div class="mc-options"><button class="mc-btn" data-correct="1" onclick="checkMC(this)">彡</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">巾</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">尸</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">屮</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b1-5" data-q="Bài 1 câu 5: bộ Hán Việt &#x27;xích&#x27;"><div><b>Câu 5.</b> Bộ thủ nào có Hán Việt là “xích” (chì), nghĩa “bước chân trái, bước đi thong thả”?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">廾</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">己</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">弋</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">彳</button></div><span class="feedback"></span></div>
+</div>
+<div class="card" id="flash-wrap"><h2>🃏 Flashcard ôn nhanh — 20 bộ gần nhất trước hôm nay <span class="badge">20 bộ · lật thẻ ngẫu nhiên</span></h2><div class="sub">Chạm giữa thẻ để lật · chạm góc trái để xem thẻ trước, góc phải để xem thẻ sau.</div><div class="flash-scene"><div class="flash-card" id="flash-card" onclick="flashTap(event)"><div class="flash-face flash-front" id="flash-front"></div><div class="flash-face flash-back" id="flash-back"></div></div><span class="flash-nav-hint left">‹</span><span class="flash-nav-hint right">›</span></div><div class="flash-Controls"><button class="btn-sm" onclick="flashPrev()">‹ Trước</button><span class="flash-count" id="flash-count"></span><button class="btn-sm" onclick="flashNext()">Sau ›</button><button class="btn-sm" onclick="flashReshuffle()">🔀 Xáo thẻ</button></div></div>
+<div class="card"><h2>🎧 Bài 2: Nghe – Chọn bộ thủ <span class="badge">Nghe pinyin của bộ</span></h2>
+<div class="q-item" id="b2-1" data-q="Bài 2 câu 1: nghe chọn bộ tâm"><div><b>Câu 1.</b> Nghe và chọn bộ vừa được đọc: <button class="btn-sm" onclick="speak('心')">🔊 Nghe</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">戈</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">方</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斤</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">心</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b2-2" data-q="Bài 2 câu 2: nghe chọn bộ hộ"><div><b>Câu 2.</b> Nghe và chọn bộ vừa được đọc: <button class="btn-sm" onclick="speak('户')">🔊 Nghe</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">文</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">户</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">心</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">支</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b2-3" data-q="Bài 2 câu 3: nghe chọn bộ chi"><div><b>Câu 3.</b> Nghe và chọn bộ vừa được đọc: <button class="btn-sm" onclick="speak('支')">🔊 Nghe</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">户</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">支</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斗</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b2-4" data-q="Bài 2 câu 4: nghe chọn bộ văn"><div><b>Câu 4.</b> Nghe và chọn bộ vừa được đọc: <button class="btn-sm" onclick="speak('文')">🔊 Nghe</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">支</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">心</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">文</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b2-5" data-q="Bài 2 câu 5: nghe chọn bộ cân"><div><b>Câu 5.</b> Nghe và chọn bộ vừa được đọc: <button class="btn-sm" onclick="speak('斤')">🔊 Nghe</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">文</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">户</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">斤</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">戈</button></div><span class="feedback"></span></div>
+</div>
+<div class="card"><h2>🔗 Bài 3: Ghép cặp bộ thủ (连连看) <span class="badge">Phản xạ mặt chữ</span></h2><div class="q-item" id="b3-1" data-q="Bài 3: ghép cặp 10 bộ của Day 7"><div class="match-grid"><div class="match-col"><div class="match-card" data-side="L" data-pair="p0" onclick="selectMatch(this)">心</div><div class="match-card" data-side="L" data-pair="p1" onclick="selectMatch(this)">戈</div><div class="match-card" data-side="L" data-pair="p2" onclick="selectMatch(this)">户</div><div class="match-card" data-side="L" data-pair="p3" onclick="selectMatch(this)">手</div><div class="match-card" data-side="L" data-pair="p4" onclick="selectMatch(this)">支</div><div class="match-card" data-side="L" data-pair="p5" onclick="selectMatch(this)">攴</div><div class="match-card" data-side="L" data-pair="p6" onclick="selectMatch(this)">文</div><div class="match-card" data-side="L" data-pair="p7" onclick="selectMatch(this)">斗</div><div class="match-card" data-side="L" data-pair="p8" onclick="selectMatch(this)">斤</div><div class="match-card" data-side="L" data-pair="p9" onclick="selectMatch(this)">方</div></div><div class="match-col"><div class="match-card" data-side="R" data-pair="p5" onclick="selectMatch(this)">phộc — đánh khẽ</div><div class="match-card" data-side="R" data-pair="p0" onclick="selectMatch(this)">tâm — tim</div><div class="match-card" data-side="R" data-pair="p9" onclick="selectMatch(this)">phương — vuông</div><div class="match-card" data-side="R" data-pair="p8" onclick="selectMatch(this)">cân — cái rìu</div><div class="match-card" data-side="R" data-pair="p4" onclick="selectMatch(this)">chi — cành nhánh</div><div class="match-card" data-side="R" data-pair="p1" onclick="selectMatch(this)">qua — cây qua</div><div class="match-card" data-side="R" data-pair="p2" onclick="selectMatch(this)">hộ — cửa một cánh</div><div class="match-card" data-side="R" data-pair="p7" onclick="selectMatch(this)">đầu — cái đấu để đong (gạo</div><div class="match-card" data-side="R" data-pair="p3" onclick="selectMatch(this)">thủ — tay</div><div class="match-card" data-side="R" data-pair="p6" onclick="selectMatch(this)">văn — văn</div></div></div><span class="feedback"></span></div></div>
+<div class="card"><h2>📖 Bài 4: Học bộ mới hôm nay <span class="badge">Thẻ bộ thủ chi tiết</span></h2><div class="sub">Mỗi thẻ gồm: dạng giản thể (chữ to) · phồn thể nếu khác · biến thể khi nằm trong chữ · Hán Việt · pinyin · số nét · nghĩa · mẹo nhớ · chữ ví dụ · cặp dễ nhầm và khổ thơ chứa bộ (nếu có).</div><div class="theory-grid"><div class="theory-card"><div class="theory-head"><div class="theory-char">心</div><div><b>Bộ 61</b> · tâm · <i>xīn</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 6</span> <span class="var-badge">Biến thể trong chữ: 忄</span></div></div><div><b>Nghĩa:</b> tim, tâm trí, tấm lòng</div><div class="mn">💡 Một quả tim với những mạch máu cong quanh — mọi chữ về tình cảm đều có tâm.</div><div class="colloc">Chữ có bộ này: <b>想</b> xiǎng – nghĩ, muốn, nhớ · <b>忘</b> wàng – quên · <b>忙</b> máng – bận rộn</div><div class="confuse-note">⚠️ 心 ở dưới giữ nguyên hình; khi đứng bên trái nó thu thành 忄 như trong 情, 快.</div><button class="btn-sm" onclick="speak('心')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">戈</div><div><b>Bộ 62</b> · qua · <i>gē</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 6</span> </div></div><div><b>Nghĩa:</b> cây qua, binh khí dài thời xưa</div><div class="mn">💡 Lưỡi qua xiên chéo trên cán dài — binh khí sắc bén của chiến trường xưa.</div><div class="colloc">Chữ có bộ này: <b>我</b> wǒ – tôi · <b>战</b> zhàn – chiến đấu, chiến tranh · <b>找</b> zhǎo – tìm, tìm kiếm</div><button class="btn-sm" onclick="speak('戈')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">户</div><div><b>Bộ 63</b> · hộ · <i>hù</i> · 4 nét · Phồn thể: 戶<br><span class="kho-badge">📜 Khổ thơ 1</span> </div></div><div><b>Nghĩa:</b> cửa một cánh; hộ, gia đình</div><div class="mn">💡 Một cánh cửa khép với chốt ngang — mở ra là vào nhà, vào hộ.</div><div class="colloc">Chữ có bộ này: <b>房</b> fáng – phòng, nhà · <b>所</b> suǒ – nơi, chỗ; sở · <b>护</b> hù – bảo vệ, che chở</div><div class="confuse-note">⚠️ 戶 (户) là cửa một cánh có nét chấm ở trên; 尸 là xác chết, không có chấm và nét dưới khác.</div><button class="btn-sm" onclick="speak('户')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">手</div><div><b>Bộ 64</b> · thủ · <i>shǒu</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 2</span> <span class="var-badge">Biến thể trong chữ: 扌</span></div></div><div><b>Nghĩa:</b> tay, bàn tay</div><div class="mn">💡 Bàn tay xòe với các ngón cong — chữ nào có thủ là việc làm bằng tay.</div><div class="colloc">Chữ có bộ này: <b>看</b> kàn – nhìn, xem · <b>拿</b> ná – cầm, lấy · <b>手</b> shǒu – tay</div><div class="confuse-note">⚠️ 手 đứng một mình hoặc ở dưới giữ nguyên; làm thành phần bên trái thu thành 扌 như trong 打, 找.</div><button class="btn-sm" onclick="speak('手')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">支</div><div><b>Bộ 65</b> · chi · <i>zhī</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 4</span> </div></div><div><b>Nghĩa:</b> cành nhánh; chống đỡ, chi (tiền)</div><div class="mn">💡 Một cành tre được tay cầm chống lên — bộ chi là cành nhánh và chống đỡ.</div><div class="colloc">Chữ có bộ này: <b>枝</b> zhī – cành cây · <b>技</b> jì – kỹ thuật, kỹ năng</div><button class="btn-sm" onclick="speak('支')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">攴</div><div><b>Bộ 66</b> · phộc · <i>pū</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 7</span> <span class="var-badge">Biến thể trong chữ: 攵</span></div></div><div><b>Nghĩa:</b> đánh khẽ, gõ nhẹ</div><div class="mn">💡 Tay cầm que gõ khẽ xuống — trong chữ nó thường viết thành 攵 ở bên phải.</div><div class="colloc">Chữ có bộ này: <b>教</b> jiào – dạy, giáo dục · <b>放</b> fàng – đặt, thả, để · <b>数</b> shù – số, con số</div><div class="confuse-note">⚠️ 攴 khi làm thành phần thường viết 攵; đừng nhầm với 父 (phụ, cha).</div><button class="btn-sm" onclick="speak('攴')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">文</div><div><b>Bộ 67</b> · văn · <i>wén</i> · 4 nét<br> </div></div><div><b>Nghĩa:</b> văn, chữ viết, văn hóa; nét vằn</div><div class="mn">💡 Một người đứng, ngực có nét vằn giao nhau — khởi đầu của chữ viết và văn hóa.</div><div class="colloc">Chữ có bộ này: <b>刘</b> liú – họ Lưu · <b>这</b> zhè – này, cái này · <b>纹</b> wén – vân, đường vằn</div><button class="btn-sm" onclick="speak('文')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">斗</div><div><b>Bộ 68</b> · đầu · <i>dǒu</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 5</span> </div></div><div><b>Nghĩa:</b> cái đấu để đong (gạo, thóc)</div><div class="mn">💡 Cái đấu đong gạo nghiêng nghiêng, còn hai chấm là hạt gạo rơi ra.</div><div class="colloc">Chữ có bộ này: <b>料</b> liào – vật liệu, dự liệu · <b>科</b> kē – khoa, môn học</div><div class="confuse-note">⚠️ 斗 (đầu, cái đấu đong) khác 豆 (đậu, hạt đậu/bát thờ) có thêm nét ngang và miệng rộng.</div><button class="btn-sm" onclick="speak('斗')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">斤</div><div><b>Bộ 69</b> · cân · <i>jīn</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 3</span> </div></div><div><b>Nghĩa:</b> cái rìu, cái búa; đơn vị cân</div><div class="mn">💡 Lưỡi rìu sắc chém xuống khúc gỗ — bộ cân vốn là cái rìu bổ củi.</div><div class="colloc">Chữ có bộ này: <b>新</b> xīn – mới · <b>近</b> jìn – gần · <b>听</b> tīng – nghe</div><button class="btn-sm" onclick="speak('斤')">🔊 Nghe đọc bộ</button></div><div class="theory-card"><div class="theory-head"><div class="theory-char">方</div><div><b>Bộ 70</b> · phương · <i>fāng</i> · 4 nét<br><span class="kho-badge">📜 Khổ thơ 3</span> </div></div><div><b>Nghĩa:</b> vuông; phương hướng, cách thức</div><div class="mn">💡 Một hình vuông có nét phẩy buông — phương là vuông vức và chỉ phương hướng.</div><div class="colloc">Chữ có bộ này: <b>放</b> fàng – đặt, thả, để · <b>旁</b> páng – bên cạnh · <b>旅</b> lǚ – du lịch, lữ hành</div><button class="btn-sm" onclick="speak('方')">🔊 Nghe đọc bộ</button></div></div></div>
+<div class="card"><h2>✍️ Bài 5: Chữ này có bộ gì? <span class="badge">Điền bộ vào chỗ trống</span></h2>
+<div class="q-item" id="b5-1" data-q="Bài 5 câu 1: chữ 我 có bộ qua"><div><b>Câu 1.</b> Chữ “我” (wǒ – tôi) có bộ ......</div><div class="mc-options"><button class="mc-btn" data-correct="1" onclick="checkMC(this)">戈</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斤</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">支</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">心</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b5-2" data-q="Bài 5 câu 2: chữ 看 có bộ thủ"><div><b>Câu 2.</b> Chữ “看” (kàn – nhìn, xem) có bộ ......</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">户</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">心</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">方</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b5-3" data-q="Bài 5 câu 3: chữ 教 có bộ phộc"><div><b>Câu 3.</b> Chữ “教” (jiào – dạy, giáo dục) có bộ ......</div><div class="mc-options"><button class="mc-btn" data-correct="1" onclick="checkMC(this)">攴</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">户</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斗</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b5-4" data-q="Bài 5 câu 4: chữ 料 có bộ đầu"><div><b>Câu 4.</b> Chữ “料” (liào – vật liệu, dự liệu) có bộ ......</div><div class="mc-options"><button class="mc-btn" data-correct="1" onclick="checkMC(this)">斗</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">攴</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斤</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">方</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b5-5" data-q="Bài 5 câu 5: chữ 放 có bộ phương"><div><b>Câu 5.</b> Chữ “放” (fàng – đặt, thả, để) có bộ ......</div><div class="mc-options"><button class="mc-btn" data-correct="1" onclick="checkMC(this)">方</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斗</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">文</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">攴</button></div><span class="feedback"></span></div>
+</div>
+<div class="card"><h2>🧩 Bài 6: Sắp xếp câu (连词成句) <span class="badge">Trật tự từ</span></h2>
+<div class="q-item" id="b6-1" data-q="Bài 6 câu 1: 心是想的部首。"><div><b>Câu 1.</b> Chạm các thẻ theo đúng thứ tự:</div><div class="scramble-box" data-ans="心|是|想|的|部首|。"><div class="answer-zone"></div><div class="word-bank"><span class="tile" onclick="scrambleMove(this)">部首</span><span class="tile" onclick="scrambleMove(this)">。</span><span class="tile" onclick="scrambleMove(this)">是</span><span class="tile" onclick="scrambleMove(this)">的</span><span class="tile" onclick="scrambleMove(this)">心</span><span class="tile" onclick="scrambleMove(this)">想</span></div><button class="btn-primary" onclick="checkScramble(this)">Kiểm tra</button> <button class="btn-sm" onclick="resetScramble(this)">Làm lại</button><span class="feedback"></span></div></div>
+<div class="q-item" id="b6-2" data-q="Bài 6 câu 2: 枝字里有支部。"><div><b>Câu 2.</b> Chạm các thẻ theo đúng thứ tự:</div><div class="scramble-box" data-ans="枝|字|里|有|支|部|。"><div class="answer-zone"></div><div class="word-bank"><span class="tile" onclick="scrambleMove(this)">字</span><span class="tile" onclick="scrambleMove(this)">枝</span><span class="tile" onclick="scrambleMove(this)">有</span><span class="tile" onclick="scrambleMove(this)">里</span><span class="tile" onclick="scrambleMove(this)">。</span><span class="tile" onclick="scrambleMove(this)">支</span><span class="tile" onclick="scrambleMove(this)">部</span></div><button class="btn-primary" onclick="checkScramble(this)">Kiểm tra</button> <button class="btn-sm" onclick="resetScramble(this)">Làm lại</button><span class="feedback"></span></div></div>
+<div class="q-item" id="b6-3" data-q="Bài 6 câu 3: 我学会了斤部。"><div><b>Câu 3.</b> Chạm các thẻ theo đúng thứ tự:</div><div class="scramble-box" data-ans="我|学会|了|斤|部|。"><div class="answer-zone"></div><div class="word-bank"><span class="tile" onclick="scrambleMove(this)">。</span><span class="tile" onclick="scrambleMove(this)">学会</span><span class="tile" onclick="scrambleMove(this)">部</span><span class="tile" onclick="scrambleMove(this)">我</span><span class="tile" onclick="scrambleMove(this)">了</span><span class="tile" onclick="scrambleMove(this)">斤</span></div><button class="btn-primary" onclick="checkScramble(this)">Kiểm tra</button> <button class="btn-sm" onclick="resetScramble(this)">Làm lại</button><span class="feedback"></span></div></div>
+</div>
+<div class="card"><h2>📚 Bài 7: Đọc hiểu đoạn văn <span class="badge">Đọc hiểu bộ thủ</span></h2><div class="reading-box" id="read-text"><span class="read-sent">今天小明学习十个新的部首。 <button class="btn-sm" onclick="chunkSpeakOne('read', 0, this)">🔊</button></span> <span class="read-sent">他觉得部首很有意思。 <button class="btn-sm" onclick="chunkSpeakOne('read', 1, this)">🔊</button></span> <span class="read-sent">“想”字里有“心”部，“我”字里有“戈”部。 <button class="btn-sm" onclick="chunkSpeakOne('read', 2, this)">🔊</button></span> <span class="read-sent">“房”字里有“户”部，“看”字里有“手”部。 <button class="btn-sm" onclick="chunkSpeakOne('read', 3, this)">🔊</button></span> <span class="read-sent">“枝”字里有“支”部，“教”字里有“攴”部。 <button class="btn-sm" onclick="chunkSpeakOne('read', 4, this)">🔊</button></span> <span class="read-sent">“刘”字里有“文”部，“料”字里有“斗”部。 <button class="btn-sm" onclick="chunkSpeakOne('read', 5, this)">🔊</button></span> <span class="read-sent">“新”字里有“斤”部，“放”字里有“方”部。 <button class="btn-sm" onclick="chunkSpeakOne('read', 6, this)">🔊</button></span> <span class="read-sent">他把每个部首都写了三遍。 <button class="btn-sm" onclick="chunkSpeakOne('read', 7, this)">🔊</button></span> <span class="read-sent">晚上，他复习了今天的部首，很高兴。 <button class="btn-sm" onclick="chunkSpeakOne('read', 8, this)">🔊</button></span> </div><div class="reading-Controls"><label>Tốc độ <input type="range" id="read-rate" min="0.5" max="1.5" step="0.01" value="0.88"></label><button class="btn-primary" id="read-play" onclick="chunkPlay('read')">▶️ Nghe</button><button class="btn-sm" onclick="chunkRestart('read')">↺ Nghe lại</button><button class="btn-sm" onclick="toggleVis('read-py')">Pinyin</button><button class="btn-sm" onclick="toggleVis('read-vi')">Dịch nghĩa</button></div><div id="read-py" style="display:none"><div>jīn tiān xiǎo míng xué xí shí gè xīn de bù shǒu 。</div><div>tā jué de bù shǒu hěn yǒu yì si 。</div><div>“ xiǎng ” zì lǐ yǒu “ xīn ” bù ，“ wǒ ” zì lǐ yǒu “ gē ” bù 。</div><div>“ fáng ” zì lǐ yǒu “ hù ” bù ，“ kàn ” zì lǐ yǒu “ shǒu ” bù 。</div><div>“ zhī ” zì lǐ yǒu “ zhī ” bù ，“ jiào ” zì lǐ yǒu “ pū ” bù 。</div><div>“ liú ” zì lǐ yǒu “ wén ” bù ，“ liào ” zì lǐ yǒu “ dòu ” bù 。</div><div>“ xīn ” zì lǐ yǒu “ jīn ” bù ，“ fàng ” zì lǐ yǒu “ fāng ” bù 。</div><div>tā bǎ měi gè bù shǒu dū xiě le sān biàn 。</div><div>wǎn shàng ， tā fù xí le jīn tiān de bù shǒu ， hěn gāo xìng 。</div></div><div id="read-vi" style="display:none"><div>Hôm nay Tiểu Minh học 10 bộ thủ mới.</div><div>Cậu ấy thấy bộ thủ rất thú vị.</div><div>Chữ “想” có bộ “心”, chữ “我” có bộ “戈”.</div><div>Chữ “房” có bộ “户”, chữ “看” có bộ “手”.</div><div>Chữ “枝” có bộ “支”, chữ “教” có bộ “攴”.</div><div>Chữ “刘” có bộ “文”, chữ “料” có bộ “斗”.</div><div>Chữ “新” có bộ “斤”, chữ “放” có bộ “方”.</div><div>Cậu ấy viết mỗi bộ thủ ba lần.</div><div>Buổi tối, cậu ấy ôn lại các bộ thủ hôm nay, rất vui.</div></div>
+<div class="q-item" id="b7-1" data-q="Bài 7 câu 1: 小明今天学习了几个部首？ → 十个"><div><b>Câu 1.</b> 小明今天学习了几个部首？ <button class="btn-sm" onclick="speak('小明今天学习了几个部首？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">五个</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">两个</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">三个</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">十个</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b7-2" data-q="Bài 7 câu 2: “房”字里有什么部首？ → 户"><div><b>Câu 2.</b> “房”字里有什么部首？ <button class="btn-sm" onclick="speak('“房”字里有什么部首？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">户</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">攴</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">心</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b7-3" data-q="Bài 7 câu 3: “料”字里有什么部首？ → 斗"><div><b>Câu 3.</b> “料”字里有什么部首？ <button class="btn-sm" onclick="speak('“料”字里有什么部首？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">攴</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">文</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">心</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">斗</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b7-4" data-q="Bài 7 câu 4: 小明晚上做了什么？ → 复习部首"><div><b>Câu 4.</b> 小明晚上做了什么？ <button class="btn-sm" onclick="speak('小明晚上做了什么？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">睡觉觉</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">去买东西</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">复习部首</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">看电视</button></div><span class="feedback"></span></div>
+</div>
+<div class="card"><h2>🎧 Bài 8: Nghe hội thoại – Suy luận <span class="badge">Nghe hiểu bộ thủ</span></h2><div class="dlg-voice-row">Giọng 老师 (nữ): <select class="dlg-voice-sel" data-sp="lao"></select> · Giọng 小明 (nam): <select class="dlg-voice-sel" data-sp="ming"></select></div><div class="dlg-controls-row"><label>Tốc độ <input type="range" id="dlg-rate" min="0.5" max="1.5" step="0.01" value="0.88"></label><button class="btn-primary dlg-play-btn" id="dlg-play" onclick="dlgPlay()">▶️ Nghe hội thoại</button><button class="btn-sm" onclick="dlgRestart()">↺</button><button class="btn-sm" onclick="toggleDlgScript()">👁️</button><button class="btn-sm" onclick="toggleDlgPinyin()">Pinyin</button></div><div id="dlg-script" style="display:none"><div class="dlg-line"><span class="dlg-sp" style="color:#059669">老师:</span> <span class="dlg-zh">小明，今天的部首难吗？</span><div class="dlg-py-line" style="display:none">xiǎo míng ， jīn tiān de bù shǒu nán ma ？</div><div class="dlg-vi">Tiểu Minh, bộ thủ hôm nay có khó không?</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#2563eb">小明:</span> <span class="dlg-zh">不难，我都认识了。</span><div class="dlg-py-line" style="display:none">bù nán ， wǒ dōu rèn shí le 。</div><div class="dlg-vi">Không khó ạ, em đều nhận ra hết.</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#059669">老师:</span> <span class="dlg-zh">“想”字是什么部首？</span><div class="dlg-py-line" style="display:none">“ xiǎng ” zì shì shén me bù shǒu ？</div><div class="dlg-vi">Chữ “想” thuộc bộ thủ nào?</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#2563eb">小明:</span> <span class="dlg-zh">是“心”部。</span><div class="dlg-py-line" style="display:none">shì “ xīn ” bù 。</div><div class="dlg-vi">Là bộ “心” ạ.</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#059669">老师:</span> <span class="dlg-zh">对。“看”字呢？</span><div class="dlg-py-line" style="display:none">duì 。“ kàn ” zì ne ？</div><div class="dlg-vi">Đúng. Còn chữ “看”?</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#2563eb">小明:</span> <span class="dlg-zh">“看”字是“手”部。</span><div class="dlg-py-line" style="display:none">“ kàn ” zì shì “ shǒu ” bù 。</div><div class="dlg-vi">Chữ “看” thuộc bộ “手”.</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#059669">老师:</span> <span class="dlg-zh">很好。“教”字的部首你也知道吗？</span><div class="dlg-py-line" style="display:none">hěn hǎo 。“ jiào ” zì de bù shǒu nǐ yě zhī dào ma ？</div><div class="dlg-vi">Rất tốt. Bộ thủ của chữ “教” em cũng biết chứ?</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#2563eb">小明:</span> <span class="dlg-zh">知道，是“攴”部。</span><div class="dlg-py-line" style="display:none">zhī dào ， shì “ pū ” bù 。</div><div class="dlg-vi">Em biết ạ, là bộ “攴”.</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#059669">老师:</span> <span class="dlg-zh">非常好，明天我们学新的部首。</span><div class="dlg-py-line" style="display:none">fēi cháng hǎo ， míng tiān wǒ men xué xīn de bù shǒu 。</div><div class="dlg-vi">Rất tốt, ngày mai chúng ta học bộ thủ mới.</div></div><div class="dlg-line"><span class="dlg-sp" style="color:#2563eb">小明:</span> <span class="dlg-zh">好的，老师，明天见！</span><div class="dlg-py-line" style="display:none">hǎo de ， lǎo shī ， míng tiān jiàn ！</div><div class="dlg-vi">Vâng ạ, thưa thầy/cô, mai gặp lại!</div></div></div>
+<div class="q-item" id="b8-1" data-q="Bài 8 câu 1: 小明觉得今天的部首难吗？ → 不难"><div><b>Câu 1.</b> 小明觉得今天的部首难吗？ <button class="btn-sm" onclick="speak('小明觉得今天的部首难吗？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">有一点儿难</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">很难</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">不难</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">不知道</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b8-2" data-q="Bài 8 câu 2: “想”字是什么部首？ → 心"><div><b>Câu 2.</b> “想”字是什么部首？ <button class="btn-sm" onclick="speak('“想”字是什么部首？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斤</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">文</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">心</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b8-3" data-q="Bài 8 câu 3: “看”字是什么部首？ → 手"><div><b>Câu 3.</b> “看”字是什么部首？ <button class="btn-sm" onclick="speak('“看”字是什么部首？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="1" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斤</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">攴</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">方</button></div><span class="feedback"></span></div>
+<div class="q-item" id="b8-4" data-q="Bài 8 câu 4: 他们明天做什么？ → 学新的部首"><div><b>Câu 4.</b> 他们明天做什么？ <button class="btn-sm" onclick="speak('他们明天做什么？')">🔊</button></div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">考试</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">休息</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">去旅行</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">学新的部首</button></div><span class="feedback"></span></div>
+</div>
+<div class="card"><h2>🔤 Bài phụ: Biến thể – Số nét – Phân biệt <span class="badge">Chữ dễ nhầm</span></h2>
+<div class="q-item" id="bp-1" data-q="Bài phụ câu 1: biến thể của tâm"><div><b>Câu 1.</b> Bộ “心” (tâm) khi nằm trong chữ thường viết thành dạng nào?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">⺶</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">风</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">忄</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">麦</button></div><span class="feedback"></span></div>
+<div class="q-item" id="bp-2" data-q="Bài phụ câu 2: số nét của chi"><div><b>Câu 2.</b> Bộ “支” (chi) có mấy nét?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">6 nét</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">7 nét</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">5 nét</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">4 nét</button></div><span class="feedback"></span></div>
+<div class="q-item" id="bp-3" data-q="Bài phụ câu 3: bộ văn"><div><b>Câu 3.</b> Bộ thủ nào đọc là “wén” (Hán Việt: văn)?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">方</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">文</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">戈</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">攴</button></div><span class="feedback"></span></div>
+<div class="q-item" id="bp-4" data-q="Bài phụ câu 4: biến thể của thủ"><div><b>Câu 4.</b> Bộ “手” (thủ) khi nằm trong chữ thường viết thành dạng nào?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">马</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">牜</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">斗</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">扌</button></div><span class="feedback"></span></div>
+<div class="q-item" id="bp-5" data-q="Bài phụ câu 5: chữ 听 có bộ cân"><div><b>Câu 5.</b> Chữ “听” (tīng – nghe) chứa bộ thủ nào?</div><div class="mc-options"><button class="mc-btn" data-correct="0" onclick="checkMC(this)">手</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">方</button><button class="mc-btn" data-correct="1" onclick="checkMC(this)">斤</button><button class="mc-btn" data-correct="0" onclick="checkMC(this)">攴</button></div><span class="feedback"></span></div>
+</div>
+<div class="card"><h2>📋 Tổng kết để gửi em <span class="badge">Câu cần ôn lại</span></h2><ul class="summary-list" id="summary-list"></ul><button class="btn-primary" onclick="copySummary()">📋 Chép danh sách</button></div>
+<div class="card"><h2>✅ Đáp án toàn bài <span class="badge">32 đáp án</span></h2><ol><li><b>Bài 1 câu 1</b>: 弋</li><li><b>Bài 1 câu 2</b>: 弓</li><li><b>Bài 1 câu 3</b>: 彐</li><li><b>Bài 1 câu 4</b>: 彡</li><li><b>Bài 1 câu 5</b>: 彳</li><li><b>Bài 2 câu 1</b>: 心</li><li><b>Bài 2 câu 2</b>: 户</li><li><b>Bài 2 câu 3</b>: 支</li><li><b>Bài 2 câu 4</b>: 文</li><li><b>Bài 2 câu 5</b>: 斤</li><li><b>Bài 3 (ghép cặp)</b>: 心 = tâm — tim · 戈 = qua — cây qua · 户 = hộ — cửa một cánh · 手 = thủ — tay · 支 = chi — cành nhánh · 攴 = phộc — đánh khẽ · 文 = văn — văn · 斗 = đầu — cái đấu để đong (gạo · 斤 = cân — cái rìu · 方 = phương — vuông</li><li><b>Bài 5 câu 1</b>: 戈</li><li><b>Bài 5 câu 2</b>: 手</li><li><b>Bài 5 câu 3</b>: 攴</li><li><b>Bài 5 câu 4</b>: 斗</li><li><b>Bài 5 câu 5</b>: 方</li><li><b>Bài 6 câu 1</b>: 心是想的部首。</li><li><b>Bài 6 câu 2</b>: 枝字里有支部。</li><li><b>Bài 6 câu 3</b>: 我学会了斤部。</li><li><b>Bài 7 câu 1</b>: 十个</li><li><b>Bài 7 câu 2</b>: 户</li><li><b>Bài 7 câu 3</b>: 斗</li><li><b>Bài 7 câu 4</b>: 复习部首</li><li><b>Bài 8 câu 1</b>: 不难</li><li><b>Bài 8 câu 2</b>: 心</li><li><b>Bài 8 câu 3</b>: 手</li><li><b>Bài 8 câu 4</b>: 学新的部首</li><li><b>Bài phụ câu 1: biến thể của tâm</b>: 忄</li><li><b>Bài phụ câu 2: số nét của chi</b>: 4 nét</li><li><b>Bài phụ câu 3: bộ văn</b>: 文</li><li><b>Bài phụ câu 4: biến thể của thủ</b>: 扌</li><li><b>Bài phụ câu 5: chữ 听 có bộ cân</b>: 斤</li></ol></div>
+<div class="footer"><a href="Day-06.html">‹ Day 6</a> · <a href="index.html">Mục lục 214 bộ thủ</a> · <a href="Day-08.html">Day 8 ›</a> · <a href="Tra-Cuu-214-Bo-Thu.html">Tra cứu 214 bộ</a></div>
+<script>window.FLASH_DATA = [{"hanzi": "寸", "sub": "Bộ 41 · 3 nét", "pinyin": "cùn", "hanviet": "thốn", "meaning": "tấc (đơn vị đo chiều dài)", "extra": ""}, {"hanzi": "小", "sub": "Bộ 42 · 3 nét", "pinyin": "xiǎo", "hanviet": "tiểu", "meaning": "nhỏ, bé", "extra": ""}, {"hanzi": "尢", "sub": "Bộ 43 · 3 nét", "pinyin": "wāng", "hanviet": "uông", "meaning": "què, yếu chân, đi khập khiễng", "extra": ""}, {"hanzi": "尸", "sub": "Bộ 44 · 3 nét", "pinyin": "shī", "hanviet": "thi", "meaning": "xác chết, thây; người giữ chỗ", "extra": ""}, {"hanzi": "屮", "sub": "Bộ 45 · 3 nét", "pinyin": "chè", "hanviet": "triệt", "meaning": "mầm non mới nhú", "extra": ""}, {"hanzi": "山", "sub": "Bộ 46 · 3 nét", "pinyin": "shān", "hanviet": "sơn", "meaning": "núi", "extra": ""}, {"hanzi": "川", "sub": "Bộ 47 · 3 nét", "pinyin": "chuān", "hanviet": "xuyên", "meaning": "sông ngòi", "extra": "Phồn thể: 巛"}, {"hanzi": "工", "sub": "Bộ 48 · 3 nét", "pinyin": "gōng", "hanviet": "công", "meaning": "người thợ, công việc", "extra": ""}, {"hanzi": "己", "sub": "Bộ 49 · 3 nét", "pinyin": "jǐ", "hanviet": "kỷ", "meaning": "bản thân mình", "extra": ""}, {"hanzi": "巾", "sub": "Bộ 50 · 3 nét", "pinyin": "jīn", "hanviet": "cân", "meaning": "cái khăn", "extra": ""}, {"hanzi": "干", "sub": "Bộ 51 · 3 nét", "pinyin": "gān", "hanviet": "can", "meaning": "khiên, lá chắn; can dự; khô", "extra": ""}, {"hanzi": "幺", "sub": "Bộ 52 · 3 nét", "pinyin": "yāo", "hanviet": "yêu", "meaning": "nhỏ nhắn, bé nhất", "extra": ""}, {"hanzi": "广", "sub": "Bộ 53 · 3 nét", "pinyin": "yǎn", "hanviet": "nghiễm", "meaning": "mái nhà, hiên nhà dựa vách đá", "extra": ""}, {"hanzi": "廴", "sub": "Bộ 54 · 3 nét", "pinyin": "yǐn", "hanviet": "dẫn", "meaning": "bước dài, kéo dài", "extra": ""}, {"hanzi": "廾", "sub": "Bộ 55 · 3 nét", "pinyin": "gǒng", "hanviet": "củng", "meaning": "chắp hai tay", "extra": ""}, {"hanzi": "弋", "sub": "Bộ 56 · 3 nét", "pinyin": "yì", "hanviet": "dặc", "meaning": "bắn, chiếm lấy; cọc có dây để bắn", "extra": ""}, {"hanzi": "弓", "sub": "Bộ 57 · 3 nét", "pinyin": "gōng", "hanviet": "cung", "meaning": "cái cung bắn tên", "extra": ""}, {"hanzi": "彐", "sub": "Bộ 58 · 3 nét", "pinyin": "jì", "hanviet": "kệ", "meaning": "đầu con heo, mõm heo", "extra": "Biến thể: 彑"}, {"hanzi": "彡", "sub": "Bộ 59 · 3 nét", "pinyin": "shān", "hanviet": "sam", "meaning": "lông tóc dài, râu; trang sức bằng lông", "extra": ""}, {"hanzi": "彳", "sub": "Bộ 60 · 3 nét", "pinyin": "chì", "hanviet": "xích", "meaning": "bước chân trái, bước đi thong thả", "extra": ""}];window.CHUNK_DATA = {'read': [{"zh": "今天小明学习十个新的部首。", "vi": "Hôm nay Tiểu Minh học 10 bộ thủ mới.", "py": "jīn tiān xiǎo míng xué xí shí gè xīn de bù shǒu 。"}, {"zh": "他觉得部首很有意思。", "vi": "Cậu ấy thấy bộ thủ rất thú vị.", "py": "tā jué de bù shǒu hěn yǒu yì si 。"}, {"zh": "“想”字里有“心”部，“我”字里有“戈”部。", "vi": "Chữ “想” có bộ “心”, chữ “我” có bộ “戈”.", "py": "“ xiǎng ” zì lǐ yǒu “ xīn ” bù ，“ wǒ ” zì lǐ yǒu “ gē ” bù 。"}, {"zh": "“房”字里有“户”部，“看”字里有“手”部。", "vi": "Chữ “房” có bộ “户”, chữ “看” có bộ “手”.", "py": "“ fáng ” zì lǐ yǒu “ hù ” bù ，“ kàn ” zì lǐ yǒu “ shǒu ” bù 。"}, {"zh": "“枝”字里有“支”部，“教”字里有“攴”部。", "vi": "Chữ “枝” có bộ “支”, chữ “教” có bộ “攴”.", "py": "“ zhī ” zì lǐ yǒu “ zhī ” bù ，“ jiào ” zì lǐ yǒu “ pū ” bù 。"}, {"zh": "“刘”字里有“文”部，“料”字里有“斗”部。", "vi": "Chữ “刘” có bộ “文”, chữ “料” có bộ “斗”.", "py": "“ liú ” zì lǐ yǒu “ wén ” bù ，“ liào ” zì lǐ yǒu “ dòu ” bù 。"}, {"zh": "“新”字里有“斤”部，“放”字里有“方”部。", "vi": "Chữ “新” có bộ “斤”, chữ “放” có bộ “方”.", "py": "“ xīn ” zì lǐ yǒu “ jīn ” bù ，“ fàng ” zì lǐ yǒu “ fāng ” bù 。"}, {"zh": "他把每个部首都写了三遍。", "vi": "Cậu ấy viết mỗi bộ thủ ba lần.", "py": "tā bǎ měi gè bù shǒu dū xiě le sān biàn 。"}, {"zh": "晚上，他复习了今天的部首，很高兴。", "vi": "Buổi tối, cậu ấy ôn lại các bộ thủ hôm nay, rất vui.", "py": "wǎn shàng ， tā fù xí le jīn tiān de bù shǒu ， hěn gāo xìng 。"}]};window.DLG_DATA = [{"sp": "lao", "zh": "小明，今天的部首难吗？", "py": "xiǎo míng ， jīn tiān de bù shǒu nán ma ？", "vi": "Tiểu Minh, bộ thủ hôm nay có khó không?"}, {"sp": "ming", "zh": "不难，我都认识了。", "py": "bù nán ， wǒ dōu rèn shí le 。", "vi": "Không khó ạ, em đều nhận ra hết."}, {"sp": "lao", "zh": "“想”字是什么部首？", "py": "“ xiǎng ” zì shì shén me bù shǒu ？", "vi": "Chữ “想” thuộc bộ thủ nào?"}, {"sp": "ming", "zh": "是“心”部。", "py": "shì “ xīn ” bù 。", "vi": "Là bộ “心” ạ."}, {"sp": "lao", "zh": "对。“看”字呢？", "py": "duì 。“ kàn ” zì ne ？", "vi": "Đúng. Còn chữ “看”?"}, {"sp": "ming", "zh": "“看”字是“手”部。", "py": "“ kàn ” zì shì “ shǒu ” bù 。", "vi": "Chữ “看” thuộc bộ “手”."}, {"sp": "lao", "zh": "很好。“教”字的部首你也知道吗？", "py": "hěn hǎo 。“ jiào ” zì de bù shǒu nǐ yě zhī dào ma ？", "vi": "Rất tốt. Bộ thủ của chữ “教” em cũng biết chứ?"}, {"sp": "ming", "zh": "知道，是“攴”部。", "py": "zhī dào ， shì “ pū ” bù 。", "vi": "Em biết ạ, là bộ “攴”."}, {"sp": "lao", "zh": "非常好，明天我们学新的部首。", "py": "fēi cháng hǎo ， míng tiān wǒ men xué xīn de bù shǒu 。", "vi": "Rất tốt, ngày mai chúng ta học bộ thủ mới."}, {"sp": "ming", "zh": "好的，老师，明天见！", "py": "hǎo de ， lǎo shī ， míng tiān jiàn ！", "vi": "Vâng ạ, thưa thầy/cô, mai gặp lại!"}];</script>
+<script>
+const PAGE_KEY = 'bothu-' + location.pathname.split('/').pop();
+function storeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function storeSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+let doneSet = new Set(JSON.parse(storeGet(PAGE_KEY + '-done') || '[]'));
+let wrongList = JSON.parse(storeGet(PAGE_KEY + '-wrong') || '[]');
+function saveDone(){ storeSet(PAGE_KEY + '-done', JSON.stringify([...doneSet])); storeSet(PAGE_KEY + '-wrong', JSON.stringify(wrongList)); updateProgress(); renderSummary(); }
+function totalQ(){ return document.querySelectorAll('.q-item').length; }
+function updateProgress(){ const t = totalQ(); document.getElementById('prog-text').textContent = doneSet.size + ' / ' + t; document.getElementById('prog-fill').style.width = (t ? doneSet.size * 100 / t : 0) + '%'; }
+function markDone(item){ if(!item || !item.id) return; doneSet.add(item.id); item.classList.add('done-ok'); saveDone(); }
+function recordWrong(item, label){ if(!wrongList.some(w => w.id === item.id)){ wrongList.push({id: item.id, label: label}); } saveDone(); }
+function unWrong(item){ wrongList = wrongList.filter(w => w.id !== item.id); }
+function renderSummary(){ const el = document.getElementById('summary-list'); if(!el) return; el.innerHTML = wrongList.length ? wrongList.map(w => '<li>' + w.label + '</li>').join('') : '<li>Chưa có câu sai nào. Làm bài xong, các câu sai sẽ hiện ở đây để anh gửi em.</li>'; }
+function resetAll(){ if(!confirm('Xoá tiến độ và làm lại từ đầu?')) return; try{ localStorage.removeItem(PAGE_KEY + '-done'); localStorage.removeItem(PAGE_KEY + '-wrong'); }catch(e){} location.reload(); }
+function copySummary(){ const txt = wrongList.map(w => '- ' + w.label).join('\n') || 'Không có câu sai.'; navigator.clipboard.writeText('Câu cần ôn lại (' + document.title + '):\n' + txt).then(() => alert('Đã chép danh sách câu cần ôn.')); }
+function speak(txt, rate){ try{ speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(txt); u.lang = 'zh-CN'; u.rate = rate || 0.85; const v = speechSynthesis.getVoices().filter(v => v.lang && v.lang.indexOf('zh') === 0); if(v.length) u.voice = v[0]; speechSynthesis.speak(u); }catch(e){} }
+function checkMC(btn){
+  const item = btn.closest('.q-item'); const fb = item.querySelector('.feedback');
+  if(btn.dataset.correct === '1'){ btn.classList.add('correct'); item.querySelectorAll('.mc-btn').forEach(b => b.disabled = true); fb.textContent = '✅ Đúng!'; unWrong(item); markDone(item); }
+  else { btn.classList.add('wrong'); btn.disabled = true; fb.textContent = '❌ Chưa đúng, thử lại nhé.'; recordWrong(item, item.dataset.q || item.id); }
+}
+/* Matching */
+let matchSel = null, matchLeft = 0;
+function initMatching(box){ matchLeft = box.querySelectorAll('.match-card[data-side="L"]').length; }
+function selectMatch(card){
+  const box = card.closest('.match-grid'); if(card.classList.contains('matched')) return;
+  if(!matchSel){ matchSel = card; card.classList.add('selected'); return; }
+  if(matchSel === card){ card.classList.remove('selected'); matchSel = null; return; }
+  if(matchSel.dataset.side === card.dataset.side){ matchSel.classList.remove('selected'); matchSel = card; card.classList.add('selected'); return; }
+  const item = box.closest('.q-item');
+  if(matchSel.dataset.pair === card.dataset.pair){ matchSel.classList.add('matched'); card.classList.add('matched'); matchSel.classList.remove('selected'); matchSel = null; matchLeft--; if(matchLeft <= 0){ item.querySelector('.feedback').textContent = '✅ Ghép đúng tất cả!'; unWrong(item); markDone(item); } }
+  else { card.classList.add('wrong-flash'); matchSel.classList.add('wrong-flash'); const a = matchSel, b = card; setTimeout(() => { a.classList.remove('wrong-flash','selected'); b.classList.remove('wrong-flash'); }, 500); matchSel = null; recordWrong(item, item.dataset.q || item.id); }
+}
+/* Scramble */
+function scrambleMove(tile){
+  const box = tile.closest('.scramble-box'); const bank = box.querySelector('.word-bank'); const zone = box.querySelector('.answer-zone');
+  if(tile.parentElement === bank) zone.appendChild(tile); else bank.appendChild(tile);
+}
+function checkScramble(btn){
+  const box = btn.closest('.scramble-box'); const item = box.closest('.q-item');
+  const got = [...box.querySelectorAll('.answer-zone .tile')].map(t => t.textContent).join('|');
+  const fb = box.querySelector('.feedback');
+  if(got === box.dataset.ans){ fb.textContent = '✅ Đúng!'; unWrong(item); markDone(item); }
+  else { fb.textContent = '❌ Chưa đúng thứ tự, thử lại nhé.'; recordWrong(item, item.dataset.q || item.id); }
+}
+function resetScramble(btn){ const box = btn.closest('.scramble-box'); const bank = box.querySelector('.word-bank'); [...box.querySelectorAll('.answer-zone .tile')].forEach(t => bank.appendChild(t)); box.querySelector('.feedback').textContent = ''; }
+/* Flashcard */
+let FLASH = [], flashDeck = [], flashIdx = 0, flashFlipped = false;
+function flashShuffleDeck(){ flashDeck = FLASH.map(w => ({w: w, hanziFront: Math.random() < 0.5})); for(let i = flashDeck.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [flashDeck[i], flashDeck[j]] = [flashDeck[j], flashDeck[i]]; } flashIdx = 0; flashRender(); }
+function flashRender(){
+  const card = document.getElementById('flash-card'); if(!card) return; card.classList.remove('flipped'); flashFlipped = false;
+  const it = flashDeck[flashIdx]; if(!it) return; const w = it.w;
+  const front = document.getElementById('flash-front'), back = document.getElementById('flash-back');
+  if(it.hanziFront){ front.innerHTML = '<div class="flash-hanzi">' + w.hanzi + '</div><div class="flash-sub">' + (w.sub || '') + '</div>'; }
+  else { front.innerHTML = '<div class="flash-meaning">' + w.meaning + '</div><div class="flash-sub">Hán Việt: ' + w.hanviet + '</div>'; }
+  back.innerHTML = '<div class="flash-hanzi">' + w.hanzi + '</div><div class="flash-sub">' + w.pinyin + ' · ' + w.hanviet + '</div><div class="flash-meaning">' + w.meaning + '</div>' + (w.extra ? '<div class="flash-tag">' + w.extra + '</div>' : '');
+  document.getElementById('flash-count').textContent = (flashIdx + 1) + ' / ' + flashDeck.length;
+}
+function flashTap(ev){ const card = document.getElementById('flash-card'); const rect = card.getBoundingClientRect(); const x = (ev.clientX - rect.left) / rect.width; if(x < 0.25) flashPrev(); else if(x > 0.75) flashNext(); else { flashFlipped = !flashFlipped; card.classList.toggle('flipped', flashFlipped); } }
+function flashNext(){ if(flashIdx < flashDeck.length - 1){ flashIdx++; flashRender(); } }
+function flashPrev(){ if(flashIdx > 0){ flashIdx--; flashRender(); } }
+function flashReshuffle(){ flashShuffleDeck(); }
+/* Chunked reading (Bài 7): pause = dừng hẳn, nghe tiếp từ câu đang dở */
+const chunkState = {};
+function chunkPlay(id){
+  const data = window.CHUNK_DATA[id]; const st = chunkState[id] || (chunkState[id] = {idx: 0, playing: false});
+  if(st.playing){ speechSynthesis.cancel(); st.playing = false; chunkBtn(id); return; }
+  st.playing = true; chunkBtn(id); chunkSpeak(id);
+}
+function chunkBtn(id){ const st = chunkState[id] || {playing: false}; const b = document.getElementById(id + '-play'); if(b) b.textContent = st.playing ? '⏸️ Tạm dừng' : '▶️ Nghe'; }
+function chunkSpeak(id){
+  const data = window.CHUNK_DATA[id]; const st = chunkState[id];
+  if(!st.playing) return;
+  if(st.idx >= data.length){ st.playing = false; st.idx = 0; chunkBtn(id); chunkHi(id, -1); return; }
+  chunkHi(id, st.idx);
+  const u = new SpeechSynthesisUtterance(data[st.idx].zh); u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById(id + '-rate').value || 0.88);
+  const v = speechSynthesis.getVoices().filter(v => v.lang && v.lang.indexOf('zh') === 0); if(v.length) u.voice = v[0];
+  u.onend = () => { if(st.playing){ st.idx++; chunkSpeak(id); } };
+  speechSynthesis.speak(u);
+}
+function chunkHi(id, idx){ document.querySelectorAll('#' + id + '-text .read-sent').forEach((s, i) => s.style.background = (i === idx ? '#fef3c7' : '')); }
+function chunkRestart(id){ const st = chunkState[id] || (chunkState[id] = {idx: 0, playing: false}); speechSynthesis.cancel(); st.idx = 0; st.playing = false; chunkBtn(id); chunkPlay(id); }
+function chunkSpeakOne(id, i, el){ speechSynthesis.cancel(); const st = chunkState[id] || (chunkState[id] = {idx: 0, playing: false}); st.playing = false; st.idx = i; chunkBtn(id); chunkHi(id, i); speak(window.CHUNK_DATA[id][i].zh, parseFloat(document.getElementById(id + '-rate').value || 0.88)); }
+function toggleVis(id){ const el = document.getElementById(id); if(el) el.style.display = (el.style.display === 'none' || !el.style.display) ? 'block' : 'none'; }
+/* Dialogue (Bài 8) */
+const dlgState = {idx: 0, playing: false};
+function dlgVoices(){ return speechSynthesis.getVoices().filter(v => v.lang && v.lang.indexOf('zh') === 0); }
+function buildDlgPickers(){
+  const vs = dlgVoices(); document.querySelectorAll('.dlg-voice-sel').forEach(sel => {
+    const sp = sel.dataset.sp; const saved = storeGet('bothu-dlg-voice-' + sp);
+    sel.innerHTML = vs.map((v, i) => '<option value="' + i + '"' + (saved == i ? ' selected' : '') + '>' + v.name + '</option>').join('') || '<option value="">(giọng mặc định)</option>';
+    sel.onchange = () => storeSet('bothu-dlg-voice-' + sp, sel.value);
+  });
+}
+function dlgVoiceFor(sp){ const sel = document.querySelector('.dlg-voice-sel[data-sp="' + sp + '"]'); const vs = dlgVoices(); if(sel && sel.value !== '' && vs[sel.value]) return vs[sel.value]; return vs[0]; }
+function dlgPlay(){
+  if(dlgState.playing){ speechSynthesis.cancel(); dlgState.playing = false; dlgBtn(); return; }
+  dlgState.playing = true; dlgBtn(); dlgSpeakLine();
+}
+function dlgBtn(){ const b = document.getElementById('dlg-play'); if(b) b.textContent = dlgState.playing ? '⏸️ Tạm dừng' : '▶️ Nghe hội thoại'; }
+function dlgSpeakLine(){
+  if(!dlgState.playing) return;
+  if(dlgState.idx >= window.DLG_DATA.length){ dlgState.playing = false; dlgState.idx = 0; dlgBtn(); dlgHi(-1); return; }
+  const line = window.DLG_DATA[dlgState.idx]; dlgHi(dlgState.idx);
+  const u = new SpeechSynthesisUtterance(line.zh); u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('dlg-rate').value || 0.88);
+  const v = dlgVoiceFor(line.sp); if(v) u.voice = v;
+  u.onend = () => { if(dlgState.playing){ dlgState.idx++; dlgSpeakLine(); } };
+  speechSynthesis.speak(u);
+}
+function dlgHi(idx){ document.querySelectorAll('.dlg-line').forEach((s, i) => s.style.background = (i === idx ? '#fef3c7' : '')); }
+function dlgRestart(){ speechSynthesis.cancel(); dlgState.idx = 0; dlgState.playing = false; dlgBtn(); dlgPlay(); }
+function toggleDlgScript(){ toggleVis('dlg-script'); }
+function toggleDlgPinyin(){ document.querySelectorAll('.dlg-py-line').forEach(e => e.style.display = (e.style.display === 'none' || !e.style.display) ? 'block' : 'none'); }
+window.addEventListener('DOMContentLoaded', () => { updateProgress(); renderSummary(); document.querySelectorAll('.q-item').forEach(it => { if(doneSet.has(it.id)) it.classList.add('done-ok'); }); if(window.FLASH_DATA){ FLASH = window.FLASH_DATA; flashShuffleDeck(); } document.querySelectorAll('.match-grid').forEach(initMatching); buildDlgPickers(); if(speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = buildDlgPickers; });
+</script></div></body></html>
