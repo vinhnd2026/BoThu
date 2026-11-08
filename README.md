@@ -6,6 +6,7 @@ Bộ bài học **214 bộ thủ** theo thứ tự Khang Hy (đúng bảng PDF g
 - Mỗi bộ có thẻ chi tiết: dạng **giản thể** + phồn thể + **biến thể khi nằm trong chữ** （人→亻, 水→氵, 手→扌, 心→忄…), Hán Việt, pinyin, số nét, nghĩa, **mẹo nhớ gợi hình**, 2–3 chữ ví dụ thông dụng, cảnh báo cặp bộ dễ nhầm, và đánh dấu bộ nằm ở **khổ thơ** nào trong bài thơ “214 bộ thủ qua thơ”.
 - Mỗi Day đủ 8 bài như các khóa trước: ôn nhanh · flashcard 20 bộ gần nhất (chạm 3 vùng) · nghe chọn bộ · ghép cặp · thẻ bộ chi tiết · điền bộ · sắp xếp câu · đọc hiểu · nghe hội thoại (một hàng nút, chọn giọng từng người) · bài phụ biến thể/số nét · đáp án toàn bài khớp số câu.
 - **Tra cứu:** [Tra-Cuu-214-Bo-Thu.html](https://vinhnd2026.github.io/BoThu/Tra-Cuu-214-Bo-Thu.html) — bảng 214 bộ, tìm kiếm + lọc theo số nét, kèm nguyên bài thơ 7 khổ.
+- **Phiếu viết tay:** [Phieu-Viet-Tay-Tho-Bo-Thu.html](https://vinhnd2026.github.io/BoThu/Phieu-Viet-Tay-Tho-Bo-Thu.html) — in ra viết tay theo từng khổ thơ: bộ thủ font thư pháp KaiTi, sau mỗi bộ là ô trống viền chấm mờ (ô đầu có chữ mờ để tô, kẻ ô 田字格), chỉnh được khổ giấy (A4/A5/Letter/Legal), chiều giấy, cỡ chữ và số ô luyện viết.
 - **Tổng kết:** [Bai-Hoc-Tong-Ket-Bo-Thu.html](https://vinhnd2026.github.io/BoThu/Bai-Hoc-Tong-Ket-Bo-Thu.html) — flashcard cả 214 bộ, ghép cặp 20 bộ tiêu biểu, 30 câu trắc nghiệm hỗn hợp.
 
 **▶️ Học ngay:** **[https://vinhnd2026.github.io/BoThu/](https://vinhnd2026.github.io/BoThu/)**
