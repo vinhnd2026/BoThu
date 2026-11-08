@@ -116,7 +116,8 @@ function paginate(d, sim){
   const src = document.getElementById('sourceContent');
   document.body.classList.remove('paginated');
   pagesBox.innerHTML = '';
-  if(!sim){ cnt.textContent = ''; return; }
+  if(!sim){ cnt.textContent = ''; pagesBox.style.display = 'none'; return; }
+  pagesBox.style.display = 'block';  // phải hiện để đo chiều cao thật khi chia trang
   document.documentElement.style.setProperty('--ph', d[1] + 'mm');
   // danh sách khối theo thứ tự đọc
   const blocks = [];
